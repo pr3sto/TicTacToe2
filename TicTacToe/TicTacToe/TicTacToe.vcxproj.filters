@@ -13,10 +13,42 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\GameComponents">
+      <UniqueIdentifier>{feb14871-44c6-409d-a13a-c5cb6500c827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameComponents">
+      <UniqueIdentifier>{1ef6ce47-47b8-4d91-8766-14396be9028b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{6b5830d0-35a7-4e72-baf1-c239ea54803f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interface">
+      <UniqueIdentifier>{863f27a9-478a-44a8-875a-cac1ef8205ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="game_parametrs.cpp">
+      <Filter>Source Files\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="interface.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="game_parametrs.h">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="interface.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
