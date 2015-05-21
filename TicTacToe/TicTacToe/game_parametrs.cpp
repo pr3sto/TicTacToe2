@@ -12,13 +12,13 @@ GameParametrs::GameParametrs()
 	playerSymbol = x;
 	gamingField = nullptr;
 
-	NewField();
+	this->NewField();
 }
 
 void GameParametrs::NewField() 
 {
 	if (gamingField != nullptr)
-		DeleteField();
+		this->DeleteField();
 
 	gamingField = new u_int*[sizeOfField];
 	for (u_int i = 0; i < sizeOfField; i++)
@@ -47,7 +47,7 @@ void GameParametrs::SetSizeOfField(u_int new_sz)
 	if (sizeOfField < sizeOfWinRow)
 		sizeOfWinRow = MIN_SIZE_OF_WIN_ROW;
 
-	NewField();
+	this->NewField();
 }
 
 void GameParametrs::SetSizeOfWinRow(u_int new_sz) 

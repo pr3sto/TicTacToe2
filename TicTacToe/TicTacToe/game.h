@@ -22,6 +22,7 @@ public:
 	~Game();
 
 	void Run();
+	void Refresh();
 };
 
 #endif // GAME_H_

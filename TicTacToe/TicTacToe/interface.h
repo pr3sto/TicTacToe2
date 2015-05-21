@@ -23,22 +23,32 @@ class Interface
 private:
 	GameParamsPtr gameParams;
 
+	void ShowLogo() const;
+
+	void ShowGamingField() const;
+
+	void ShowMainMenu() const;
+
+	// settings menu session
+	void ShowSettingsMenu() const;
+	void ShowSizeOfFieldMenu();
+	void ShowSizeOfWinRowMenu();
+	void ShowGameModMenu();
+	void ShowComplexityMenu();
+	void ShowSymbolMenu();
+	void SettingsMenuSession();
+
+	// input methods
+	u_int GetNumber(string, u_int, u_int) const;
+	COORD GetCoord() const;
+
 public:
 	Interface() { gameParams = GameParamsPtr(nullptr); }
 	Interface(GameParamsPtr gameParams_) { gameParams = gameParams_; }
 	~Interface() { }
 
-	void ShowLogo() const;
-	void ShowGamingField() const;
-
-	void ShowMainMenu() const;
-	void ShowSettingsMenu() const;
-	void ShowGameModMenu() const;
-	void ShowComplexityMenu() const;
-	void ShowSymbolMenu() const;
-
-	u_int GetNumber(string, u_int = 0, u_int = MAXUINT) const;
-	COORD GetCoord() const;
+	// menu session; @return 0 - exit
+	u_int MenuSession(); 
 };
 
 #endif // INTERFACE_H_

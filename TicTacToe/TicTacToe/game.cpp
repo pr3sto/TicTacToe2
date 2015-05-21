@@ -4,5 +4,11 @@
 
 void Game::Run()
 {
+	gameInterface.MenuSession();
+	this->Refresh();
+}
+
+void Game::Refresh()
+{
 
 }

@@ -21,7 +21,7 @@ void Interface::ShowGamingField() const
 
 void Interface::ShowMainMenu() const 
 {
-	ShowLogo();
+	this->ShowLogo();
 
 	cout << setw(44) << "1. Играть" << endl << endl;
 	cout << setw(46) << "2. Настройки" << endl << endl;
@@ -32,7 +32,7 @@ void Interface::ShowMainMenu() const
 
 void Interface::ShowSettingsMenu() const 
 {
-	ShowLogo();
+	this->ShowLogo();
 
 	cout << setw(63) << "Настройки:                " << endl << endl;
 	cout << setw(50) << "1. Размер поля            ";
@@ -60,30 +60,136 @@ void Interface::ShowSettingsMenu() const
 	cout << endl << setw(63) << "6. Назад                  " << endl << endl;
 }
 
-void Interface::ShowGameModMenu() const 
+void Interface::ShowSizeOfFieldMenu()
 {
-	ShowLogo();
+	system("cls");
+	this->ShowLogo();
+
+	gameParams->SetSizeOfField(
+		this->GetNumber("\t\t\t    Введите размер поля: ",
+		gameParams->MIN_SIZE_OF_FIEFD, gameParams->MAX_SIZE_OF_FIEFD)
+	);
+}
+
+void Interface::ShowSizeOfWinRowMenu()
+{
+	system("cls");
+	this->ShowLogo();
+
+	gameParams->SetSizeOfWinRow(
+		this->GetNumber("\t\t\tВведите размер линии для победы: ",
+		gameParams->MIN_SIZE_OF_WIN_ROW, gameParams->SizeOfField())
+	);
+}
+
+void Interface::ShowGameModMenu()  
+{
+	system("cls");
+	this->ShowLogo();
 
 	cout << setw(49) << "1. Игрок vs Игрок" << endl << endl;
 	cout << setw(51) << "2. Игрок vs Компьютер" << endl << endl;
 	cout << setw(53) << "3. Компьютер vs Компьютер" << endl << endl;
+
+	u_int mod_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
+	switch (mod_choise)
+	{
+	case 1:
+		gameParams->SetGameMod(playerVsPlayer);
+		break;
+	case 2:
+		gameParams->SetGameMod(playerVsComputer);
+		break;
+	case 3:
+		gameParams->SetGameMod(computerVsComputer);
+		break;
+	default:
+		gameParams->SetGameMod(playerVsComputer);
+		break;
+	}
 }
 
-void Interface::ShowComplexityMenu() const 
+void Interface::ShowComplexityMenu()  
 {
-	ShowLogo();
+	system("cls");
+	this->ShowLogo();
 
 	cout << setw(44) << "1. Легко" << endl << endl;
 	cout << setw(45) << "2. Средне" << endl << endl;
 	cout << setw(45) << "3. Сложно" << endl << endl;
+
+	u_int compl_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
+	switch (compl_choise) 
+	{
+	case 1:
+		gameParams->SetComplexity(easy);
+		break;
+	case 2:
+		gameParams->SetComplexity(medium);
+		break;
+	case 3: 
+		gameParams->SetComplexity(hard);
+		break;
+	default:
+		gameParams->SetComplexity(medium);
+		break;
+	}
 }
 
-void Interface::ShowSymbolMenu() const 
+void Interface::ShowSymbolMenu() 
 {
-	ShowLogo();
+	system("cls");
+	this->ShowLogo();
 
 	cout << setw(42) << "1. X" << endl << endl;
 	cout << setw(42) << "2. O" << endl << endl;
+
+	u_int symb_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 2);
+	switch (symb_choise) 
+	{
+	case 1: 
+		gameParams->SetPlayerSymbol(x);
+		break;
+	case 2: 
+		gameParams->SetPlayerSymbol(o);
+		break;
+	default:
+		gameParams->SetPlayerSymbol(x);
+		break;
+	}
+}
+
+void Interface::SettingsMenuSession()
+{
+	this->ShowSettingsMenu();
+
+	while (true)
+	{
+		u_int sett_choise = GetNumber("Введите номер нужного пункта: ", 1, 6);
+
+		switch (sett_choise)
+		{
+		case 1: // size of field
+			this->ShowSizeOfFieldMenu();
+			break;			
+		case 2: // size of win row
+			this->ShowSizeOfWinRowMenu();
+			break;			
+		case 3: // game mod
+			this->ShowGameModMenu();
+			break;
+		case 4: // complexity
+			this->ShowComplexityMenu();
+			break;			
+		case 5: // players symbol
+			this->ShowSymbolMenu();
+			break;
+		case 6: // back
+			return;
+		default:
+			break;
+		}
+	}
 }
 
 u_int Interface::GetNumber(string msg, u_int min, u_int max) const 
@@ -129,7 +235,36 @@ u_int Interface::GetNumber(string msg, u_int min, u_int max) const
 COORD Interface::GetCoord() const 
 {
 	COORD ret;
-	ret.X = GetNumber("Введите координату x: ", 0, gameParams->SizeOfField());
-	ret.Y = GetNumber("Введите координату Y: ", 0, gameParams->SizeOfField());
+	ret.X = GetNumber("Введите координату x: ", 1, gameParams->SizeOfField());
+	ret.Y = GetNumber("Введите координату Y: ", 1, gameParams->SizeOfField());
 	return ret;
+}
+
+u_int Interface::MenuSession()
+{
+	this->ShowMainMenu();
+	
+	while (true)
+	{
+		u_int menu_choise = GetNumber("Введите номер нужного пункта: ", 1, 5);
+
+		switch (menu_choise)
+		{
+		case 1: // play
+			return 1;
+		case 2: // settings
+			this->SettingsMenuSession();
+			break;
+		case 3: // statistic
+			//TODO: write stats func
+			break;
+		case 4: // info
+			//TODO: write info func
+			break;
+		case 5: // exit
+			return 0;
+		default:
+			break;
+		}
+	}
 }
