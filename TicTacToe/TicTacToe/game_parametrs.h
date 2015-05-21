@@ -3,8 +3,13 @@
 #ifndef GAME_PARAMETRS_H_
 #define GAME_PARAMETRS_H_
 
-typedef int u_int;
+#include <memory> // std::shared_ptr
+#include "windows.h"
+
+class GameParametrs;
+
 typedef std::shared_ptr<GameParametrs> GameParamsPtr;
+
 
 enum gameMod_ {
 	playerVsPlayer,

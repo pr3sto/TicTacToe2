@@ -161,11 +161,12 @@ void Interface::ShowSymbolMenu()
 
 void Interface::SettingsMenuSession()
 {
-	this->ShowSettingsMenu();
-
 	while (true)
 	{
-		u_int sett_choise = GetNumber("¬ведите номер нужного пункта: ", 1, 6);
+		system("cls");
+		this->ShowSettingsMenu();
+
+		u_int sett_choise = GetNumber("\t\t\t    ¬ведите номер пункта меню: ", 1, 6);
 
 		switch (sett_choise)
 		{
@@ -241,12 +242,13 @@ COORD Interface::GetCoord() const
 }
 
 u_int Interface::MenuSession()
-{
-	this->ShowMainMenu();
-	
+{	
 	while (true)
 	{
-		u_int menu_choise = GetNumber("¬ведите номер нужного пункта: ", 1, 5);
+		system("cls");
+		this->ShowMainMenu();
+
+		u_int menu_choise = GetNumber("\t\t\t    ¬ведите номер пункта меню: ", 1, 5);
 
 		switch (menu_choise)
 		{

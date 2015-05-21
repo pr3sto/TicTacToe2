@@ -7,8 +7,6 @@
 #include <iostream>
 #include <iomanip> // std::setw
 #include <string>
-#include <memory> // std::shared_ptr
-#include "windows.h"
 #include "game_parametrs.h"
 
 using std::cout;

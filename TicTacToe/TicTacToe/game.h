@@ -3,7 +3,6 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include <memory> // std::shared_ptr
 #include "game_parametrs.h"
 #include "interface.h"
 
@@ -19,7 +18,7 @@ public:
 		gameParams = GameParamsPtr(new GameParametrs);
 		gameInterface = Interface(gameParams);
 	}
-	~Game();
+	~Game() {}
 
 	void Run();
 	void Refresh();
