@@ -4,30 +4,57 @@
 
 void Interface::ShowLogo() const 
 {
-	cout << endl;
-	cout << setw(60) << "OOO   O                        XXX   " << endl;
-	cout << setw(60) << " OO  OO                      XX   XX " << endl;
-	cout << setw(60) << "  OOO     XX    XX   OOOO   X    X  X" << endl;
-	cout << setw(60) << "   OOO     XX  XX   OO      X  X    X" << endl;
-	cout << setw(60) << " OO  OO     X X       OO     XX   XX " << endl;
-	cout << setw(60) << " O   OOO     X     OOOO        XXX   " << endl;
+	cout << setw(75) << R"(  _____    ______                                      _________    )" << endl;
+	cout << setw(75) << R"(  \  \ \  /   / /                                    /        \ \   )" << endl;
+	cout << setw(75) << R"(   \  \ \/   / /     ___     ____    ________       /    ___   \ \  )" << endl;
+	cout << setw(75) << R"(    \  \/   / /      \  \   /  / /  /  ____/_/     |    /|  |   | | )" << endl;
+	cout << setw(75) << R"(    /   _   | |       \  \_/  / /  /  /____        |   | |  |   | | )" << endl;
+	cout << setw(75) << R"(   /   / \   \ \       \     / /   \____  \ \      |   |_|_/    | | )" << endl;
+	cout << setw(75) << R"(  /   / / \   \ \       \   / /     ____\  \ \      \          / /  )" << endl;
+	cout << setw(75) << R"( /___/_/   \___\_\       \_/_/     /_______/_/       \________/_/   )" << endl;
 	cout << endl;
 }
 
 void Interface::ShowGamingField() const
 {
+	SetConsoleOutputCP(866);
+	char symb_left, symb_right, symb_center;
+	for (u_int i = 0; i < gameComponents->SizeOfField()+1; ++i)
+	{
+		if (i == 0) { symb_left = '\xda'; symb_right = '\xbf'; symb_center = '\xc2'; }
+		else if (i == gameComponents->SizeOfField()) { symb_left = '\xc0'; symb_right = '\xd9'; symb_center = '\xc1'; }
+		else { symb_left = '\xc3'; symb_right = '\xb4'; symb_center = '\xc5'; }
 
+		for (u_int j = 0; j < gameComponents->SizeOfField(); ++j)
+		{
+			if (j == 0) cout << setw(36) << symb_left << "\xc4\xc4\xc4";
+			if (j == gameComponents->SizeOfField()-1) cout << symb_right;
+			else cout << symb_center << "\xc4\xc4\xc4";
+		}
+		cout << endl;
+		if (i != gameComponents->SizeOfField())
+		{
+			cout << setw(39) << "\xb3   ";
+			for (u_int j = 0; j < gameComponents->SizeOfField(); ++j)
+				cout << "\xb3   ";
+
+			cout << endl;
+		}
+	}
+	SetConsoleOutputCP(1251);
 }
 
 void Interface::ShowMainMenu() const 
 {
 	this->ShowLogo();
 
+	cout << endl;
 	cout << setw(44) << "1. Играть" << endl << endl;
 	cout << setw(46) << "2. Настройки" << endl << endl;
 	cout << setw(46) << "3. Статистика" << endl << endl;
 	cout << setw(45) << "4. Об игре" << endl << endl;
 	cout << setw(44) << "5. Выход" << endl << endl;
+	cout << endl;
 }
 
 void Interface::ShowSettingsMenu() const 
@@ -36,28 +63,15 @@ void Interface::ShowSettingsMenu() const
 
 	cout << setw(63) << "Настройки:                " << endl << endl;
 	cout << setw(50) << "1. Размер поля            ";
-	cout << setw(5) << "(" << gameParams->SizeOfField() << "x" << gameParams->SizeOfField() << ")" << endl << endl;
+	cout << setw(5) << "(" << gameComponents->SizeOfField() << "x" << gameComponents->SizeOfField() << ")" << endl << endl;
 	cout << setw(50) << "2. Размер линии для победы";
-	cout << setw(5) << "(" << gameParams->SizeOfWinRow() << ")" << endl << endl;
-	cout << setw(50) << "3. Режим игры             ";
-	cout << setw(5) << "(";
-	if (gameParams->GameMod() == playerVsPlayer) cout << "игрок vs игрок";
-	if (gameParams->GameMod() == playerVsComputer) cout << "игрок vs комп.";
-	if (gameParams->GameMod() == computerVsComputer) cout << "комп. vs комп.";
-	cout << ")" << endl << endl;
-	cout << setw(50) << "4. Сложность              ";
-	cout << setw(5) << "(";
-	if (gameParams->Complexity() == easy)   cout << "легко";
-	if (gameParams->Complexity() == medium) cout << "средне";
-	if (gameParams->Complexity() == hard)   cout << "сложно";
-	cout << ")" << endl << endl;
-	cout << setw(50) << "5. Символ                 ";
-	cout << setw(5) << "(";
-	if (gameParams->PlayerSymbol() == x) cout << "X";
-	if (gameParams->PlayerSymbol() == o) cout << "O";
-	cout << ")" << endl << endl;
+	cout << setw(5) << "(" << gameComponents->SizeOfWinRow() << ")" << endl << endl;
+	cout << setw(50) << "3. Первый игрок           ";
+	cout << setw(5) << "(" << gameComponents->Player1()->GetPlayerName() << ")" << endl << endl;
+	cout << setw(50) << "4. Второй игрок           ";
+	cout << setw(5) << "(" << gameComponents->Player2()->GetPlayerName() << ")" << endl << endl;
 
-	cout << endl << setw(63) << "6. Назад                  " << endl << endl;
+	cout << endl << setw(63) << "5. Назад                  " << endl << endl;
 }
 
 void Interface::ShowSizeOfFieldMenu()
@@ -65,9 +79,9 @@ void Interface::ShowSizeOfFieldMenu()
 	system("cls");
 	this->ShowLogo();
 
-	gameParams->SetSizeOfField(
+	gameComponents->SetSizeOfField(
 		this->GetNumber("\t\t\t    Введите размер поля: ",
-		gameParams->MIN_SIZE_OF_FIEFD, gameParams->MAX_SIZE_OF_FIEFD)
+		gameComponents->MIN_SIZE_OF_FIEFD, gameComponents->MAX_SIZE_OF_FIEFD)
 	);
 }
 
@@ -76,89 +90,58 @@ void Interface::ShowSizeOfWinRowMenu()
 	system("cls");
 	this->ShowLogo();
 
-	gameParams->SetSizeOfWinRow(
+	gameComponents->SetSizeOfWinRow(
 		this->GetNumber("\t\t\tВведите размер линии для победы: ",
-		gameParams->MIN_SIZE_OF_WIN_ROW, gameParams->SizeOfField())
+		gameComponents->MIN_SIZE_OF_WIN_ROW, gameComponents->SizeOfField())
 	);
 }
 
-void Interface::ShowGameModMenu()  
+void Interface::ShowChoisePlayer1Menu()
 {
 	system("cls");
 	this->ShowLogo();
 
-	cout << setw(49) << "1. Игрок vs Игрок" << endl << endl;
-	cout << setw(51) << "2. Игрок vs Компьютер" << endl << endl;
-	cout << setw(53) << "3. Компьютер vs Компьютер" << endl << endl;
+	cout << setw(54) << "Выберите первого игрока: " << endl << endl;
 
-	u_int mod_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
-	switch (mod_choise)
+	int counter = 1;
+	vector<PlayerPtr> tmp = gameComponents->vectorOfPlayers.GetPlayers();
+
+	for (vecOfPlayersIter i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
-	case 1:
-		gameParams->SetGameMod(playerVsPlayer);
-		break;
-	case 2:
-		gameParams->SetGameMod(playerVsComputer);
-		break;
-	case 3:
-		gameParams->SetGameMod(computerVsComputer);
-		break;
-	default:
-		gameParams->SetGameMod(playerVsComputer);
-		break;
+		u_int width = 40 - (*i)->GetPlayerName().size()/2;
+		cout << setw(width) << counter << ". " << (*i)->GetPlayerName() << endl;
 	}
+	cout << endl;
+	
+	// player_choise - 1, because of vector have numeration from 0
+	u_int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, tmp.size()) - 1;
+
+	gameComponents->SetPlayer1(gameComponents->vectorOfPlayers.GetPlayers()[player_choise]);
 }
 
-void Interface::ShowComplexityMenu()  
+void Interface::ShowChoisePlayer2Menu()
 {
 	system("cls");
 	this->ShowLogo();
 
-	cout << setw(44) << "1. Легко" << endl << endl;
-	cout << setw(45) << "2. Средне" << endl << endl;
-	cout << setw(45) << "3. Сложно" << endl << endl;
+	cout << setw(54) << "Выберите первого игрока: " << endl << endl;
 
-	u_int compl_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
-	switch (compl_choise) 
+	int counter = 1;
+	vector<PlayerPtr> tmp = gameComponents->vectorOfPlayers.GetPlayers();
+
+	for (vecOfPlayersIter i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
-	case 1:
-		gameParams->SetComplexity(easy);
-		break;
-	case 2:
-		gameParams->SetComplexity(medium);
-		break;
-	case 3: 
-		gameParams->SetComplexity(hard);
-		break;
-	default:
-		gameParams->SetComplexity(medium);
-		break;
+		u_int width = 40 - (*i)->GetPlayerName().size() / 2;
+		cout << setw(width) << counter << ". " << (*i)->GetPlayerName() << endl;
 	}
+	cout << endl;
+
+	// player_choise - 1, because of vector have numeration from 0
+	u_int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, tmp.size()) - 1;
+
+	gameComponents->SetPlayer2(gameComponents->vectorOfPlayers.GetPlayers()[player_choise]);
 }
-
-void Interface::ShowSymbolMenu() 
-{
-	system("cls");
-	this->ShowLogo();
-
-	cout << setw(42) << "1. X" << endl << endl;
-	cout << setw(42) << "2. O" << endl << endl;
-
-	u_int symb_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 2);
-	switch (symb_choise) 
-	{
-	case 1: 
-		gameParams->SetPlayerSymbol(x);
-		break;
-	case 2: 
-		gameParams->SetPlayerSymbol(o);
-		break;
-	default:
-		gameParams->SetPlayerSymbol(x);
-		break;
-	}
-}
-
+	
 void Interface::SettingsMenuSession()
 {
 	while (true)
@@ -166,7 +149,7 @@ void Interface::SettingsMenuSession()
 		system("cls");
 		this->ShowSettingsMenu();
 
-		u_int sett_choise = GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 6);
+		u_int sett_choise = GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 5);
 
 		switch (sett_choise)
 		{
@@ -176,16 +159,13 @@ void Interface::SettingsMenuSession()
 		case 2: // size of win row
 			this->ShowSizeOfWinRowMenu();
 			break;			
-		case 3: // game mod
-			this->ShowGameModMenu();
+		case 3: // player 1
+			this->ShowChoisePlayer1Menu();
 			break;
-		case 4: // complexity
-			this->ShowComplexityMenu();
+		case 4: // player 2
+			this->ShowChoisePlayer2Menu();
 			break;			
-		case 5: // players symbol
-			this->ShowSymbolMenu();
-			break;
-		case 6: // back
+		case 5: // back
 			return;
 		default:
 			break;
@@ -193,24 +173,27 @@ void Interface::SettingsMenuSession()
 	}
 }
 
-u_int Interface::GetNumber(string msg, u_int min, u_int max) const 
+u_int Interface::GetNumber(const string& msg, u_int min, u_int max) const 
 {
-	// переменные, необходимые для работы с курсором в консоли
+	// for working with cursor
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	DWORD Written = 0;
 
-	// координаты курсора
+	// coordinates of cursor
 	COORD coord;
 
-	// возвращаемое число
+	// retrun
 	u_int ret;
 
 	while (true) 
 	{
-		cout << msg;
+		if (msg.empty())
+			cout << "Введите число от " << min << " до " << max << ": ";
+		else
+			cout << msg;
 
-		// получить текущие координаты
+		// get current coordinates of cursor
 		GetConsoleScreenBufferInfo(hStdOut, &csbiInfo);
 		coord.X = 0;
 		coord.Y = csbiInfo.dwCursorPosition.Y;
@@ -225,7 +208,7 @@ u_int Interface::GetNumber(string msg, u_int min, u_int max) const
 		cin.clear();
 		cin.ignore(10, '\n');
 
-		// установить курсор, и стереть предыдущую строчку
+		// set cursor + erase next line
 		SetConsoleCursorPosition(hStdOut, coord);
 		FillConsoleOutputCharacter(hStdOut, ' ', 80, coord, &Written);
 	}
@@ -236,8 +219,8 @@ u_int Interface::GetNumber(string msg, u_int min, u_int max) const
 COORD Interface::GetCoord() const 
 {
 	COORD ret;
-	ret.X = GetNumber("Введите координату x: ", 1, gameParams->SizeOfField());
-	ret.Y = GetNumber("Введите координату Y: ", 1, gameParams->SizeOfField());
+	ret.X = GetNumber("Введите координату x: ", 1, gameComponents->SizeOfField());
+	ret.Y = GetNumber("Введите координату Y: ", 1, gameComponents->SizeOfField());
 	return ret;
 }
 
@@ -253,6 +236,9 @@ u_int Interface::MenuSession()
 		switch (menu_choise)
 		{
 		case 1: // play
+			system("cls");
+			this->ShowGamingField();
+			cin.get();
 			return 1;
 		case 2: // settings
 			this->SettingsMenuSession();

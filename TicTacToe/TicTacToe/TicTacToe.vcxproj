@@ -77,14 +77,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_parametrs.cpp" />
+    <ClCompile Include="game_components.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
-    <ClInclude Include="game_parametrs.h" />
+    <ClInclude Include="game_components.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="interface.h" />
+    <ClInclude Include="player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

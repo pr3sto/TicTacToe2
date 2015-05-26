@@ -1,21 +1,22 @@
-// game_parametrs.cpp - parametrs of game
+// game_parametrs.cpp - game components 
 
-#include "game_parametrs.h"
+#include "game_components.h"
 
-GameParametrs::GameParametrs() 
+GameComponents::GameComponents() 
 {
 	oldSizeOfField = 3;
 	sizeOfField = 3;
 	sizeOfWinRow = 3;
-	gameMod = playerVsComputer;
-	complexity = medium;
-	playerSymbol = x;
 	gamingField = nullptr;
+
+	// Humans
+	player1 = vectorOfPlayers.GetPlayers()[0];
+	player2 = vectorOfPlayers.GetPlayers()[0];
 
 	this->NewField();
 }
 
-void GameParametrs::NewField() 
+void GameComponents::NewField() 
 {
 	if (gamingField != nullptr)
 		this->DeleteField();
@@ -29,14 +30,14 @@ void GameParametrs::NewField()
 			gamingField[i][j] = 0;
 }
 
-void GameParametrs::DeleteField() 
+void GameComponents::DeleteField() 
 {
 	for (u_int i = 0; i < oldSizeOfField; i++)
 		delete[] gamingField[i];
 	delete[] gamingField;
 }
 
-void GameParametrs::SetSizeOfField(u_int new_sz) 
+void GameComponents::SetSizeOfField(u_int new_sz) 
 {
 	if (new_sz < MIN_SIZE_OF_FIEFD || new_sz > MAX_SIZE_OF_FIEFD)
 		return;
@@ -50,7 +51,7 @@ void GameParametrs::SetSizeOfField(u_int new_sz)
 	this->NewField();
 }
 
-void GameParametrs::SetSizeOfWinRow(u_int new_sz) 
+void GameComponents::SetSizeOfWinRow(u_int new_sz) 
 {
 	if (new_sz < MIN_SIZE_OF_WIN_ROW || new_sz > MAX_SIZE_OF_WIN_ROW)
 		return;

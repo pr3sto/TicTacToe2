@@ -3,20 +3,21 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "game_parametrs.h"
+#include "game_components.h"
 #include "interface.h"
+#include "player.h"
 
 class Game
 {
 private:
-	GameParamsPtr gameParams;
+	GameComponentsPtr gameComponents;
 	Interface gameInterface;
 
 public:
 	Game() 
 	{
-		gameParams = GameParamsPtr(new GameParametrs);
-		gameInterface = Interface(gameParams);
+		gameComponents = GameComponentsPtr(new GameComponents);
+		gameInterface = Interface(gameComponents);
 	}
 	~Game() {}
 

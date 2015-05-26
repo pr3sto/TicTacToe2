@@ -7,7 +7,7 @@
 #include <iostream>
 #include <iomanip> // std::setw
 #include <string>
-#include "game_parametrs.h"
+#include "game_components.h"
 
 using std::cout;
 using std::cin;
@@ -19,33 +19,32 @@ using std::string;
 class Interface
 {
 private:
-	GameParamsPtr gameParams;
+	GameComponentsPtr gameComponents;
 
 	void ShowLogo() const;
-
 	void ShowGamingField() const;
-
 	void ShowMainMenu() const;
 
 	// settings menu session
 	void ShowSettingsMenu() const;
 	void ShowSizeOfFieldMenu();
 	void ShowSizeOfWinRowMenu();
-	void ShowGameModMenu();
-	void ShowComplexityMenu();
-	void ShowSymbolMenu();
+	void ShowChoisePlayer1Menu();
+	void ShowChoisePlayer2Menu();
 	void SettingsMenuSession();
 
 	// input methods
-	u_int GetNumber(string, u_int, u_int) const;
+	u_int GetNumber(const string&, u_int, u_int) const;
 	COORD GetCoord() const;
 
 public:
-	Interface() { gameParams = GameParamsPtr(nullptr); }
-	Interface(GameParamsPtr gameParams_) { gameParams = gameParams_; }
+	Interface() : gameComponents(GameComponentsPtr(nullptr)) { }
+	Interface(GameComponentsPtr gameParams_) : gameComponents(gameParams_) { }
 	~Interface() { }
 
-	// menu session; @return 0 - exit
+	// menu session
+	// @return 0 - exit
+	// @retrun 1 - play game
 	u_int MenuSession(); 
 };
 

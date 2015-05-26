@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Interface">
       <UniqueIdentifier>{863f27a9-478a-44a8-875a-cac1ef8205ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Players">
+      <UniqueIdentifier>{b48b30c4-be41-4db3-ac37-72126a607266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Players">
+      <UniqueIdentifier>{641874d5-f85f-4df0-926e-b0a888f1421b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,22 +39,31 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files\GameComponents</Filter>
     </ClCompile>
-    <ClCompile Include="game_parametrs.cpp">
-      <Filter>Source Files\GameComponents</Filter>
-    </ClCompile>
     <ClCompile Include="interface.cpp">
       <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Human.cpp">
+      <Filter>Source Files\Players</Filter>
+    </ClCompile>
+    <ClCompile Include="game_components.cpp">
+      <Filter>Source Files\GameComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
-    <ClInclude Include="game_parametrs.h">
-      <Filter>Header Files\GameComponents</Filter>
-    </ClInclude>
     <ClInclude Include="interface.h">
       <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Human.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="game_components.h">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\Players</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
