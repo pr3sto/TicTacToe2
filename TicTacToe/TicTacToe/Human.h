@@ -1,4 +1,4 @@
-// Human.h - game player - Human
+// human.h - game player - Human
 
 #ifndef HUMAN_H_
 #define HUMAN_H_
@@ -8,9 +8,9 @@
 class HumanPlayer : public Player
 {
 public:
-	HumanPlayer() : Player("Человек") { }
-	~HumanPlayer() { }
+	HumanPlayer(FieldInfo* field_);
+	~HumanPlayer();
 
-	virtual COORD Move() { return COORD(); }
+	virtual COORD Move();
 };
 #endif // HUMAN_H_

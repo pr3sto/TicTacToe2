@@ -2,13 +2,27 @@
 
 #include "interface.h"
 
+Interface::Interface()
+{
+	gameComponents = nullptr;
+}
+
+Interface::Interface(GameComponents* gameComps_)
+{
+	gameComponents = gameComps_;
+}
+
+Interface::~Interface() 
+{ }
+
+
 void Interface::ShowLogo() const 
 {
 	cout << setw(75) << R"(  _____    ______                                      _________    )" << endl;
 	cout << setw(75) << R"(  \  \ \  /   / /                                    /        \ \   )" << endl;
 	cout << setw(75) << R"(   \  \ \/   / /     ___     ____    ________       /    ___   \ \  )" << endl;
 	cout << setw(75) << R"(    \  \/   / /      \  \   /  / /  /  ____/_/     |    /|  |   | | )" << endl;
-	cout << setw(75) << R"(    /   _   | |       \  \_/  / /  /  /____        |   | |  |   | | )" << endl;
+	cout << setw(75) << R"(    |   _   | |       \  \_/  / /  /  /____        |   | |  |   | | )" << endl;
 	cout << setw(75) << R"(   /   / \   \ \       \     / /   \____  \ \      |   |_|_/    | | )" << endl;
 	cout << setw(75) << R"(  /   / / \   \ \       \   / /     ____\  \ \      \          / /  )" << endl;
 	cout << setw(75) << R"( /___/_/   \___\_\       \_/_/     /_______/_/       \________/_/   )" << endl;
@@ -19,23 +33,23 @@ void Interface::ShowGamingField() const
 {
 	SetConsoleOutputCP(866);
 	char symb_left, symb_right, symb_center;
-	for (u_int i = 0; i < gameComponents->SizeOfField()+1; ++i)
+	for (u_int i = 0; i < gameComponents->GamingField()->SizeOfField()+1; ++i)
 	{
 		if (i == 0) { symb_left = '\xda'; symb_right = '\xbf'; symb_center = '\xc2'; }
-		else if (i == gameComponents->SizeOfField()) { symb_left = '\xc0'; symb_right = '\xd9'; symb_center = '\xc1'; }
+		else if (i == gameComponents->GamingField()->SizeOfField()) { symb_left = '\xc0'; symb_right = '\xd9'; symb_center = '\xc1'; }
 		else { symb_left = '\xc3'; symb_right = '\xb4'; symb_center = '\xc5'; }
 
-		for (u_int j = 0; j < gameComponents->SizeOfField(); ++j)
+		for (u_int j = 0; j < gameComponents->GamingField()->SizeOfField(); ++j)
 		{
 			if (j == 0) cout << setw(36) << symb_left << "\xc4\xc4\xc4";
-			if (j == gameComponents->SizeOfField()-1) cout << symb_right;
+			if (j == gameComponents->GamingField()->SizeOfField() - 1) cout << symb_right;
 			else cout << symb_center << "\xc4\xc4\xc4";
 		}
 		cout << endl;
-		if (i != gameComponents->SizeOfField())
+		if (i != gameComponents->GamingField()->SizeOfField())
 		{
 			cout << setw(39) << "\xb3   ";
-			for (u_int j = 0; j < gameComponents->SizeOfField(); ++j)
+			for (u_int j = 0; j < gameComponents->GamingField()->SizeOfField(); ++j)
 				cout << "\xb3   ";
 
 			cout << endl;
@@ -63,9 +77,10 @@ void Interface::ShowSettingsMenu() const
 
 	cout << setw(63) << "Настройки:                " << endl << endl;
 	cout << setw(50) << "1. Размер поля            ";
-	cout << setw(5) << "(" << gameComponents->SizeOfField() << "x" << gameComponents->SizeOfField() << ")" << endl << endl;
+	cout << setw(5) << "(" << gameComponents->GamingField()->SizeOfField() << "x"
+		<< gameComponents->GamingField()->SizeOfField() << ")" << endl << endl;
 	cout << setw(50) << "2. Размер линии для победы";
-	cout << setw(5) << "(" << gameComponents->SizeOfWinRow() << ")" << endl << endl;
+	cout << setw(5) << "(" << gameComponents->GamingField()->SizeOfWinRow() << ")" << endl << endl;
 	cout << setw(50) << "3. Первый игрок           ";
 	cout << setw(5) << "(" << gameComponents->Player1()->GetPlayerName() << ")" << endl << endl;
 	cout << setw(50) << "4. Второй игрок           ";
@@ -79,9 +94,11 @@ void Interface::ShowSizeOfFieldMenu()
 	system("cls");
 	this->ShowLogo();
 
-	gameComponents->SetSizeOfField(
+	gameComponents->GamingField()->SetSizeOfField(
 		this->GetNumber("\t\t\t    Введите размер поля: ",
-		gameComponents->MIN_SIZE_OF_FIEFD, gameComponents->MAX_SIZE_OF_FIEFD)
+			gameComponents->GamingField()->MIN_SIZE_OF_FIEFD,
+			gameComponents->GamingField()->MAX_SIZE_OF_FIEFD
+		)
 	);
 }
 
@@ -90,9 +107,11 @@ void Interface::ShowSizeOfWinRowMenu()
 	system("cls");
 	this->ShowLogo();
 
-	gameComponents->SetSizeOfWinRow(
+	gameComponents->GamingField()->SetSizeOfWinRow(
 		this->GetNumber("\t\t\tВведите размер линии для победы: ",
-		gameComponents->MIN_SIZE_OF_WIN_ROW, gameComponents->SizeOfField())
+			gameComponents->GamingField()->MIN_SIZE_OF_WIN_ROW,
+			gameComponents->GamingField()->SizeOfField()
+		)
 	);
 }
 
@@ -104,7 +123,7 @@ void Interface::ShowChoisePlayer1Menu()
 	cout << setw(54) << "Выберите первого игрока: " << endl << endl;
 
 	int counter = 1;
-	vector<PlayerPtr> tmp = gameComponents->vectorOfPlayers.GetPlayers();
+	std::vector<Player*> tmp = gameComponents->VectorOfPlayers();
 
 	for (vecOfPlayersIter i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
@@ -116,7 +135,7 @@ void Interface::ShowChoisePlayer1Menu()
 	// player_choise - 1, because of vector have numeration from 0
 	u_int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, tmp.size()) - 1;
 
-	gameComponents->SetPlayer1(gameComponents->vectorOfPlayers.GetPlayers()[player_choise]);
+	gameComponents->SetPlayer1(gameComponents->VectorOfPlayers()[player_choise]);
 }
 
 void Interface::ShowChoisePlayer2Menu()
@@ -127,7 +146,7 @@ void Interface::ShowChoisePlayer2Menu()
 	cout << setw(54) << "Выберите первого игрока: " << endl << endl;
 
 	int counter = 1;
-	vector<PlayerPtr> tmp = gameComponents->vectorOfPlayers.GetPlayers();
+	std::vector<Player*> tmp = gameComponents->VectorOfPlayers();
 
 	for (vecOfPlayersIter i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
@@ -139,7 +158,7 @@ void Interface::ShowChoisePlayer2Menu()
 	// player_choise - 1, because of vector have numeration from 0
 	u_int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, tmp.size()) - 1;
 
-	gameComponents->SetPlayer2(gameComponents->vectorOfPlayers.GetPlayers()[player_choise]);
+	gameComponents->SetPlayer2(gameComponents->VectorOfPlayers()[player_choise]);
 }
 	
 void Interface::SettingsMenuSession()
@@ -219,8 +238,8 @@ u_int Interface::GetNumber(const string& msg, u_int min, u_int max) const
 COORD Interface::GetCoord() const 
 {
 	COORD ret;
-	ret.X = GetNumber("Введите координату x: ", 1, gameComponents->SizeOfField());
-	ret.Y = GetNumber("Введите координату Y: ", 1, gameComponents->SizeOfField());
+	ret.X = GetNumber("Введите координату x: ", 1, gameComponents->GamingField()->SizeOfField());
+	ret.Y = GetNumber("Введите координату Y: ", 1, gameComponents->GamingField()->SizeOfField());
 	return ret;
 }
 

@@ -2,13 +2,18 @@
 
 #include "game.h"
 
+Game::Game()
+{
+	gameComponents = new GameComponents;
+	gameInterface = Interface(gameComponents);
+}
+
+Game::~Game()
+{
+	delete gameComponents;
+}
+
 void Game::Run()
 {
 	gameInterface.MenuSession();
-	this->Refresh();
-}
-
-void Game::Refresh()
-{
-
 }

@@ -19,7 +19,7 @@ using std::string;
 class Interface
 {
 private:
-	GameComponentsPtr gameComponents;
+	GameComponents* gameComponents;
 
 	void ShowLogo() const;
 	void ShowGamingField() const;
@@ -38,9 +38,9 @@ private:
 	COORD GetCoord() const;
 
 public:
-	Interface() : gameComponents(GameComponentsPtr(nullptr)) { }
-	Interface(GameComponentsPtr gameParams_) : gameComponents(gameParams_) { }
-	~Interface() { }
+	Interface();
+	Interface(GameComponents*);
+	~Interface();
 
 	// menu session
 	// @return 0 - exit

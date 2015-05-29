@@ -42,7 +42,10 @@
     <ClCompile Include="interface.cpp">
       <Filter>Source Files\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Human.cpp">
+    <ClCompile Include="field.cpp">
+      <Filter>Source Files\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="human.cpp">
       <Filter>Source Files\Players</Filter>
     </ClCompile>
     <ClCompile Include="game_components.cpp">
@@ -56,13 +59,16 @@
     <ClInclude Include="interface.h">
       <Filter>Header Files\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Human.h">
-      <Filter>Header Files\Players</Filter>
-    </ClInclude>
     <ClInclude Include="game_components.h">
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>Header Files\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="human.h">
       <Filter>Header Files\Players</Filter>
     </ClInclude>
   </ItemGroup>

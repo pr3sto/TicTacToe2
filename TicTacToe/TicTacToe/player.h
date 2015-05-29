@@ -5,20 +5,22 @@
 
 #include <string>
 #include "windows.h"
-
-using std::string;
+#include "field.h"
 
 class Player
 {
-private:
-	string playerName;
+protected:
+	FieldInfo* field;
+	std::string playerName;
 
 public:
-	Player(string playerName_) : playerName(playerName_) { }
+	Player(FieldInfo* field_, std::string playerName_) :
+		field(field_),
+		playerName(playerName_) { }
 	virtual ~Player() { }
 
 	// getter
-	string GetPlayerName() { return playerName; }
+	std::string GetPlayerName() const { return playerName; }
 
 	// player's move
 	virtual COORD Move() =0;

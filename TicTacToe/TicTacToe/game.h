@@ -10,19 +10,14 @@
 class Game
 {
 private:
-	GameComponentsPtr gameComponents;
+	GameComponents* gameComponents;
 	Interface gameInterface;
 
 public:
-	Game() 
-	{
-		gameComponents = GameComponentsPtr(new GameComponents);
-		gameInterface = Interface(gameComponents);
-	}
-	~Game() {}
+	Game();
+	~Game();
 
 	void Run();
-	void Refresh();
 };
 
 #endif // GAME_H_
