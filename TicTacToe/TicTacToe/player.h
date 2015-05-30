@@ -14,13 +14,14 @@ protected:
 	std::string playerName;
 
 public:
-	Player(FieldInfo* field_, std::string playerName_) :
-		field(field_),
-		playerName(playerName_) { }
-	virtual ~Player() { }
+	Player(FieldInfo* field_, std::string playerName_);
+	virtual ~Player();
 
 	// getter
-	std::string GetPlayerName() const { return playerName; }
+	std::string GetPlayerName() const;
+
+	// setter
+	void SetPlayerName(std::string playerName_);
 
 	// player's move
 	virtual COORD Move() =0;

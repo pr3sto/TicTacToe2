@@ -16,7 +16,8 @@ typedef std::vector<Player*>::iterator vecOfPlayersIter;
 class Players
 {
 private:
-	std::vector<Player*> players;
+	std::vector<Player*> humans;
+	std::vector<Player*> bots;
 
 public:
 	Players();
@@ -24,14 +25,15 @@ public:
 	~Players();
 	
 	//getter
-	std::vector<Player*> GetPlayers() const;
+	std::vector<Player*> GetBots() const;
+	std::vector<Player*> GetHumans() const;
 };
 
 class GameComponents 
 {
 private:
 	Field* field;
-	Players* players; // vector of pointers to all players
+	Players* players;  // vector of pointers to all bots
 	Player* player1; // pointer to player 1
 	Player* player2; // pointer to player 2
 
@@ -43,7 +45,8 @@ public:
 	Player* Player1() const;
 	Player* Player2() const;
 	Field* GamingField() const;
-	std::vector<Player*> VectorOfPlayers() const;
+	std::vector<Player*> VectorOfBots() const;
+	std::vector<Player*> VectorOfHumans() const;
 
 	// setters
 	void SetPlayer1(Player* player1_);

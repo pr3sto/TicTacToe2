@@ -13,20 +13,32 @@ Players::Players(FieldInfo* field_)
 		exit(1);
 	}
 
+	humans.push_back(new HumanPlayer(field_)); // human for player1
+	humans.push_back(new HumanPlayer(field_)); // human for player2
+
 	//TODO: add bots - just push it :/
-	players.push_back(new HumanPlayer(field_));
+	bots.push_back(new HumanPlayer(field_));
 }
 
 Players::~Players()
 {
-	for (vecOfPlayersIter i = players.begin(); i != players.end(); ++i)
+	for (vecOfPlayersIter i = humans.begin(); i != humans.end(); ++i)
+		delete (*i);
+
+	for (vecOfPlayersIter i = bots.begin(); i != bots.end(); ++i)
 		delete (*i);
 }
 
-std::vector<Player*> Players::GetPlayers() const
+std::vector<Player*> Players::GetBots() const
 { 
-	return players; 
+	return bots; 
 }
+
+std::vector<Player*> Players::GetHumans() const
+{
+	return humans;
+}
+
 
 
 
@@ -34,13 +46,14 @@ GameComponents::GameComponents()
 {
 	field = new Field();
 	players = new Players(field);
-	player1 = players->GetPlayers()[0];
-	player2 = players->GetPlayers()[0];
+	player1 = players->GetHumans()[0];
+	player2 = players->GetHumans()[1];
 }
 
 GameComponents::~GameComponents()
 {
 	delete field;
+	delete players;
 }
 
 Player* GameComponents::Player1() const
@@ -58,9 +71,14 @@ Field* GameComponents::GamingField() const
 	return field; 
 }
 
-std::vector<Player*> GameComponents::VectorOfPlayers() const 
+std::vector<Player*> GameComponents::VectorOfBots() const 
 { 
-	return players->GetPlayers(); 
+	return players->GetBots();
+}
+
+std::vector<Player*> GameComponents::VectorOfHumans() const
+{
+	return players->GetHumans();
 }
 
 void GameComponents::SetPlayer1(Player* player1_)

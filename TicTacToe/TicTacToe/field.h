@@ -30,7 +30,9 @@ public:
 	// getters
 	u_int SizeOfField() const;
 	u_int SizeOfWinRow() const;
-	u_int ValueOfCell(u_int, u_int) const;
+
+	// const to prohibit changing
+	const u_int* operator[](u_int) const;
 };
 
 class Field : public FieldInfo
@@ -39,6 +41,8 @@ public:
 	// setters
 	void SetSizeOfField(u_int);
 	void SetSizeOfWinRow(u_int);
+
+	u_int* operator[](u_int) const;
 };
 
 #endif // FIELD_H_

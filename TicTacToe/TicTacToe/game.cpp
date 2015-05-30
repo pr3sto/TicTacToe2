@@ -15,5 +15,13 @@ Game::~Game()
 
 void Game::Run()
 {
-	gameInterface.MenuSession();
+	u_int play = gameInterface.MenuSession();
+	
+	if (play)
+	{
+		system("cls");
+		(*gameComponents->GamingField())[0][2] = 2;
+		gameInterface.ShowGamingField();
+		std::cin.get();
+	}
 }

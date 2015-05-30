@@ -9,32 +9,27 @@
 #include <string>
 #include "game_components.h"
 
-using std::cout;
-using std::cin;
-using std::endl;
-using std::setw;
-using std::string;
-
-
 class Interface
 {
 private:
 	GameComponents* gameComponents;
 
 	void ShowLogo() const;
-	void ShowGamingField() const;
 	void ShowMainMenu() const;
 
 	// settings menu session
+	void SettingsMenuSession() const;
+
 	void ShowSettingsMenu() const;
-	void ShowSizeOfFieldMenu();
-	void ShowSizeOfWinRowMenu();
-	void ShowChoisePlayer1Menu();
-	void ShowChoisePlayer2Menu();
-	void SettingsMenuSession();
+	void ShowSizeOfFieldMenu() const;
+	void ShowSizeOfWinRowMenu() const;
+
+	void ShowBots() const;
+	void ShowChoisePlayer1Menu() const;
+	void ShowChoisePlayer2Menu() const;
 
 	// input methods
-	u_int GetNumber(const string&, u_int, u_int) const;
+	u_int GetNumber(const std::string&, u_int, u_int) const;
 	COORD GetCoord() const;
 
 public:
@@ -45,7 +40,9 @@ public:
 	// menu session
 	// @return 0 - exit
 	// @retrun 1 - play game
-	u_int MenuSession(); 
+	u_int MenuSession() const;
+
+	void ShowGamingField() const;
 };
 
 #endif // INTERFACE_H_
