@@ -43,6 +43,9 @@ public:
 	void SetSizeOfWinRow(u_int);
 
 	u_int* operator[](u_int) const;
+
+	bool VerifyMove(u_int, COORD) const;
+	bool VerifyVictory() const;
 };
 
 #endif // FIELD_H_

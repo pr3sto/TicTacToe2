@@ -8,9 +8,9 @@
 class HumanPlayer : public Player
 {
 public:
-	HumanPlayer(FieldInfo* field_);
+	HumanPlayer(FieldInfo* field_, std::string playerName_);
 	~HumanPlayer();
 
-	virtual COORD Move();
+	virtual COORD Move() const;
 };
 #endif // HUMAN_H_

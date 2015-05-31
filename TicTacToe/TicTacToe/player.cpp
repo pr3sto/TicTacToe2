@@ -4,7 +4,7 @@
 
 Player::Player(FieldInfo* field_, std::string playerName_)
 {
-	field = field;
+	field = field_;
 	playerName = playerName_;
 }
 
@@ -21,5 +21,7 @@ void Player::SetPlayerName(std::string playerName_)
 	if (playerName_.empty())
 		return;
 
-	playerName = playerName_;
+	// maxlength of player name = 12
+	u_int tmp = min(playerName_.size(), 12);
+	playerName = std::string(playerName_.begin(), playerName_.begin() + tmp);
 }

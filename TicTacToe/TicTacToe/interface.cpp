@@ -36,10 +36,9 @@ void Interface::ShowLogo() const
 
 void Interface::ShowGamingField() const
 {
-	// borders
-	SetConsoleOutputCP(866);
+	SetConsoleOutputCP(866); // for border's symbols
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE); // for color changing
 
-	char symb_left, symb_right, symb_center;
 	u_int sizeOfField = gameComponents->GamingField()->SizeOfField();
 	u_int space = (10 - sizeOfField) * 2;
 
@@ -51,47 +50,125 @@ void Interface::ShowGamingField() const
 	if (sizeOfField < 5)
 		cout << endl;
 
-	/*
-	for (u_int i = 0; i < sizeOfField + 1; ++i)
-	{
-		if (i == 0) { symb_left = '\xda'; symb_right = '\xbf'; symb_center = '\xc2'; }
-		else if (i == sizeOfField) { symb_left = '\xc0'; symb_right = '\xd9'; symb_center = '\xc1'; }
-		else { symb_left = '\xc3'; symb_right = '\xb4'; symb_center = '\xc5'; }
+	// top of field
+	cout << setw(38 + space) << "\xda" << "\xc4\xc4\xc4";
+	for (u_int i = 1; i < sizeOfField; ++i) cout << "\xc2" << "\xc4\xc4\xc4";
+	cout << "\xbf" << endl;
 
+	// middle of field
+	for (u_int i = 0; i < sizeOfField; ++i)
+	{
+		cout << setw(38 + space) << "\xb3";
 		for (u_int j = 0; j < sizeOfField; ++j)
 		{
-			if (j == 0) cout << setw(36 + space) << symb_left << "\xc4\xc4\xc4";
-			if (j == sizeOfField - 1) cout << symb_right;
-			else cout << symb_center << "\xc4\xc4\xc4";
+			SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightRed));
+			if ((*gameComponents->GamingField())[j][i] == 1) cout << " X ";
+			else if ((*gameComponents->GamingField())[j][i] == 2) cout << " O ";
+			else
+			{
+				SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | Blue));
+				cout << j << "," << i;
+			}
+			SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightGray));
+			cout << "\xb3";
 		}
 		cout << endl;
-		if (i != sizeOfField)
-		{
-			if ((*gameComponents->GamingField())[0][i] == 1) cout << setw(39 + space) << "\xb3 X ";
-			else if ((*gameComponents->GamingField())[0][i] == 2) cout << setw(39 + space) << "\xb3 O ";
-			else cout << setw(39 + space) << "\xb3   ";
 
-			for (u_int j = 1; j < sizeOfField+1; ++j)
-			{
-				cout << "\xb3 ";
-				if ((*gameComponents->GamingField())[j][i] == 1) cout << "X ";
-				else if ((*gameComponents->GamingField())[j][i] == 2) cout << "O ";
-				else cout << "  ";
-			}
+		if (i == sizeOfField - 1) break;
 
-			cout << endl;
-		}
-	}*/
+		cout << setw(38 + space) << "\xc3" << "\xc4\xc4\xc4";
+		for (u_int j = 1; j < sizeOfField; ++j) cout << "\xc5" << "\xc4\xc4\xc4";
+		cout << "\xb4" << endl;
+	}
+
+	// bottom of field
+	cout << setw(38 + space) << "\xc0" << "\xc4\xc4\xc4";
+	for (u_int i = 1; i < sizeOfField; ++i) cout << "\xc1" << "\xc4\xc4\xc4";
+	cout << "\xd9" << endl;
 
 	SetConsoleOutputCP(1251);
+}
 
-	//symbols
+void Interface::ShowPlayingInfo() const
+{
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// coordinates of cursor
+	COORD coord;
+
+	coord.X = 15; coord.Y = 1;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << "ИГРА";
+
+	coord.X = 5; coord.Y = 4;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << "Первый игрок (X):";
+	coord.X = 23; coord.Y = 4;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << gameComponents->Player1()->GetPlayerName();
+
+	coord.X = 5; coord.Y = 6;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << "Второй игрок (O):";
+	coord.X = 23; coord.Y = 6;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << gameComponents->Player2()->GetPlayerName();
+
+	coord.X = 5; coord.Y = 8;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << "Размер линии для победы: ";
+	coord.X = 30; coord.Y = 8;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << gameComponents->GamingField()->SizeOfWinRow();
+}
+
+void Interface::ShowPlayingMenu(u_int player) const
+{
+	system("cls");
+
+	if (player != 1 && player != 2)
+	{
+		std::cerr << "Error! Invalid argument in void Interface::ShowPlayingMenu(u_int).";
+		exit(1);
+	}
+
+	this->ShowGamingField();
+	this->ShowPlayingInfo();
+
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// coordinates of cursor
+	COORD coord;
+
+	coord.X = 5; coord.Y = 11;
+	SetConsoleCursorPosition(hStdOut, coord);
+	cout << "Ход:";
+	coord.X = 10; coord.Y = 11;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	if (player == 1)
+		cout << gameComponents->Player1()->GetPlayerName() << endl;
+	
+	else if (player == 2)
+		cout << gameComponents->Player2()->GetPlayerName() << endl;
+
+	coord.X = 5; coord.Y = 13;
+	SetConsoleCursorPosition(hStdOut, coord);
+}
+
+void Interface::ShowPlayerMove(u_int player, COORD move) const
+{
+	this->ShowPlayingMenu(player);
+
+	cout << "Ход в клетку (" << move.X << ", " << move.Y << ") ";
+
+	std::cin.get();
 }
 
 void Interface::ShowMainMenu() const 
 {
 	this->ShowLogo();
-
+	
 	cout << endl;
 	cout << setw(46) << "1.   Играть  " << endl << endl;
 	cout << setw(46) << "2. Настройки " << endl << endl;
@@ -200,9 +277,10 @@ void Interface::ShowChoisePlayer1Menu() const
 			  system("cls");
 			  this->ShowLogo();
 
-			  cout << endl << endl << endl << endl << endl;
-			  cout << setw(50) << "Введите имя игрока: ";
-			  std::string tmp;  cin >> tmp;
+			  cout << endl << endl << endl;
+			  cout << setw(60) << "Максимальное количество символов: 12" << endl << endl;
+			  cout << setw(44) << "Введите имя игрока: ";
+			  std::string tmp;  getline(cin, tmp);
 			  gameComponents->SetPlayer1(gameComponents->VectorOfHumans()[0]);
 			  gameComponents->Player1()->SetPlayerName(tmp);
 			  break;
@@ -251,9 +329,10 @@ void Interface::ShowChoisePlayer2Menu() const
 			  system("cls");
 			  this->ShowLogo();
 
-			  cout << endl << endl << endl << endl << endl;
-			  cout << setw(50) << "Введите имя игрока: ";
-			  std::string tmp;  cin >> tmp;
+			  cout << endl << endl << endl;
+			  cout << setw(60) << "Максимальное количество символов: 12" << endl << endl;
+			  cout << setw(44) << "Введите имя игрока: ";
+			  std::string tmp;  getline(cin, tmp);
 			  gameComponents->SetPlayer2(gameComponents->VectorOfHumans()[1]);
 			  gameComponents->Player2()->SetPlayerName(tmp);
 			  break;
@@ -354,14 +433,6 @@ u_int Interface::GetNumber(const std::string& msg, u_int min, u_int max) const
 		FillConsoleOutputCharacter(hStdOut, ' ', 300, coord, &Written);
 	}
 
-	return ret;
-}
-
-COORD Interface::GetCoord() const 
-{
-	COORD ret;
-	ret.X = GetNumber("Введите координату x: ", 1, gameComponents->GamingField()->SizeOfField());
-	ret.Y = GetNumber("Введите координату Y: ", 1, gameComponents->GamingField()->SizeOfField());
 	return ret;
 }
 

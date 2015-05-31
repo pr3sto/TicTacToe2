@@ -13,11 +13,15 @@ private:
 	GameComponents* gameComponents;
 	Interface gameInterface;
 
+	void Play() const;
+	void Player1Move() const;
+	void Player2Move() const;
+
 public:
 	Game();
 	~Game();
 
-	void Run();
+	void Run() const;
 };
 
 #endif // GAME_H_

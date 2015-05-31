@@ -85,3 +85,22 @@ u_int* Field::operator[](u_int i) const
 {
 	return gamingField[i];
 }
+
+bool Field::VerifyMove(u_int player, COORD move) const
+{
+	if (move.X < 0 || move.X >= sizeOfField || move.Y < 0 || move.Y >= sizeOfField)
+		return false;
+
+	if (gamingField[move.X][move.Y] == 0)
+	{
+		gamingField[move.X][move.Y] = player;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Field::VerifyVictory() const
+{
+	return false;
+}

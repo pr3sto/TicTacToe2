@@ -13,11 +13,11 @@ Players::Players(FieldInfo* field_)
 		exit(1);
 	}
 
-	humans.push_back(new HumanPlayer(field_)); // human for player1
-	humans.push_back(new HumanPlayer(field_)); // human for player2
+	humans.push_back(new HumanPlayer(field_, "Игрок 1")); // human for player1
+	humans.push_back(new HumanPlayer(field_, "Игрок 2")); // human for player2
 
 	//TODO: add bots - just push it :/
-	bots.push_back(new HumanPlayer(field_));
+	bots.push_back(new HumanPlayer(field_, "Example"));
 }
 
 Players::~Players()

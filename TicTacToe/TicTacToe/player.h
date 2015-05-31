@@ -24,7 +24,7 @@ public:
 	void SetPlayerName(std::string playerName_);
 
 	// player's move
-	virtual COORD Move() =0;
+	virtual COORD Move() const =0;
 };
 
 #endif // PLAYER_H_

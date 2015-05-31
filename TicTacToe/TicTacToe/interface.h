@@ -9,6 +9,15 @@
 #include <string>
 #include "game_components.h"
 
+enum ConsoleColor
+{
+	Black = 0,
+	Blue = 1,
+	LightGray = 7,
+	LightRed = 12,
+	White = 15
+};
+
 class Interface
 {
 private:
@@ -16,8 +25,10 @@ private:
 
 	void ShowLogo() const;
 	void ShowMainMenu() const;
+	void ShowGamingField() const;
+	void ShowPlayingInfo() const;
 
-	// settings menu session
+
 	void SettingsMenuSession() const;
 
 	void ShowSettingsMenu() const;
@@ -30,7 +41,6 @@ private:
 
 	// input methods
 	u_int GetNumber(const std::string&, u_int, u_int) const;
-	COORD GetCoord() const;
 
 public:
 	Interface();
@@ -42,7 +52,9 @@ public:
 	// @retrun 1 - play game
 	u_int MenuSession() const;
 
-	void ShowGamingField() const;
+	// u_int = 1 / 2  -  player1's / player2's  move
+	void ShowPlayingMenu(u_int) const;
+	void ShowPlayerMove(u_int, COORD) const;
 };
 
 #endif // INTERFACE_H_
