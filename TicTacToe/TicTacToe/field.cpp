@@ -100,7 +100,100 @@ bool Field::VerifyMove(u_int player, COORD move) const
 		return false;
 }
 
-bool Field::VerifyVictory() const
+bool Field::CheckLine(COORD move) const
 {
-	return false;
+	u_int counter = 0;
+	u_int player = gamingField[move.X][move.Y];
+
+	for (u_int i = 0; i < sizeOfField; ++i)
+	{
+		if (gamingField[i][move.Y] == player) counter++;
+		else
+		{
+			if (counter < sizeOfWinRow) counter = 0;
+			else return true;
+		}
+	}
+
+	return (counter >= sizeOfWinRow ? true : false);
+}
+
+bool Field::CheckColumn(COORD move) const
+{
+	u_int counter = 0;
+	u_int player = gamingField[move.X][move.Y];
+
+	for (u_int i = 0; i < sizeOfField; ++i)
+	{
+		if (gamingField[move.X][i] == player) counter++;
+		else
+		{
+			if (counter < sizeOfWinRow) counter = 0;
+			else return true;
+		}
+	}
+
+	return (counter >= sizeOfWinRow ? true : false);
+}
+
+bool Field::CheckLeftToRightDiagonal(COORD move) const
+{
+	u_int counter = 0;
+	u_int player = gamingField[move.X][move.Y];
+
+	COORD position; // start position - upper left corner of diagonal
+	position.X = move.X - min(move.X, move.Y);
+	position.Y = move.Y - min(move.X, move.Y);
+
+	for (; (position.X < sizeOfField && position.Y < sizeOfField); position.X++, position.Y++)
+	{
+		if (gamingField[position.X][position.Y] == player) counter++;
+		else
+		{
+			if (counter < sizeOfWinRow) counter = 0;
+			else return true;
+		}
+	}
+
+	return (counter >= sizeOfWinRow ? true : false);
+}
+
+bool Field::CheckRightToLeftDiagonal(COORD move) const
+{
+	u_int counter = 0;
+	u_int player = gamingField[move.X][move.Y];
+
+	COORD position; // start position - upper right corner of diagonal
+	if (move.X + move.Y <= sizeOfField - 1)
+	{
+		position.X = move.X + move.Y;
+		position.Y = 0;
+	}
+	else
+	{
+		position.X = sizeOfField - 1;
+		position.Y = move.Y - (sizeOfField - 1 - move.X);
+	}
+
+	for (; (position.X >= 0 && position.Y < sizeOfField); position.X--, position.Y++)
+	{
+		if (gamingField[position.X][position.Y] == player) counter++;
+		else
+		{
+			if (counter < sizeOfWinRow) counter = 0;
+			else return true;
+		}
+	}
+
+	return (counter >= sizeOfWinRow ? true : false);
+}
+
+bool Field::VerifyVictory(COORD move) const
+{
+	return (
+		CheckLine(move) ||
+		CheckColumn(move) ||
+		CheckLeftToRightDiagonal(move) ||
+		CheckRightToLeftDiagonal(move)
+		);
 }

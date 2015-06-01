@@ -27,8 +27,10 @@ void Game::Player1Move() const
 
 	gameInterface.ShowPlayerMove(1, player1Move);
 
-	if (gameComponents->GamingField()->VerifyVictory())
+	if (gameComponents->GamingField()->VerifyVictory(player1Move))
 	{
+		std::cout << "онаедю";
+		std::cin.get();
 	}
 }
 
@@ -46,8 +48,10 @@ void Game::Player2Move() const
 
 	gameInterface.ShowPlayerMove(2, player2Move);
 
-	if (gameComponents->GamingField()->VerifyVictory())
+	if (gameComponents->GamingField()->VerifyVictory(player2Move))
 	{
+		std::cout << "онаедю";
+		std::cin.get();
 	}
 }
 

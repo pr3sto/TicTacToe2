@@ -37,6 +37,13 @@ public:
 
 class Field : public FieldInfo
 {
+private:
+	// additional functions for VerifyVictory
+	bool CheckLine(COORD) const;
+	bool CheckColumn(COORD) const;
+	bool CheckLeftToRightDiagonal(COORD) const;
+	bool CheckRightToLeftDiagonal(COORD) const;
+
 public:
 	// setters
 	void SetSizeOfField(u_int);
@@ -45,7 +52,10 @@ public:
 	u_int* operator[](u_int) const;
 
 	bool VerifyMove(u_int, COORD) const;
-	bool VerifyVictory() const;
+
+	// COORD - coordinates of player's move
+	//         that can cause victory
+	bool VerifyVictory(COORD) const;
 };
 
 #endif // FIELD_H_
