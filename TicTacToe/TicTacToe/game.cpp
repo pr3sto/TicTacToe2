@@ -13,9 +13,10 @@ Game::~Game()
 	delete gameComponents;
 }
 
-void Game::Player1Move() const
+bool Game::Player1Move() const
 {
-	gameInterface.ShowPlayingMenu(1);
+	gameInterface.ShowPlayersMoveMenu(1);
+
 	COORD player1Move = gameComponents->Player1()->Move();
 
 	if (!gameComponents->GamingField()->VerifyMove(1, player1Move))
@@ -27,16 +28,13 @@ void Game::Player1Move() const
 
 	gameInterface.ShowPlayerMove(1, player1Move);
 
-	if (gameComponents->GamingField()->VerifyVictory(player1Move))
-	{
-		std::cout << "онаедю";
-		std::cin.get();
-	}
+	return gameComponents->GamingField()->VerifyVictory(player1Move);
 }
 
-void Game::Player2Move() const
+bool Game::Player2Move() const
 {
-	gameInterface.ShowPlayingMenu(2);
+	gameInterface.ShowPlayersMoveMenu(2);
+
 	COORD player2Move = gameComponents->Player2()->Move();
 
 	if (!gameComponents->GamingField()->VerifyMove(2, player2Move))
@@ -48,29 +46,35 @@ void Game::Player2Move() const
 
 	gameInterface.ShowPlayerMove(2, player2Move);
 
-	if (gameComponents->GamingField()->VerifyVictory(player2Move))
-	{
-		std::cout << "онаедю";
-		std::cin.get();
-	}
+	return gameComponents->GamingField()->VerifyVictory(player2Move);
 }
 
 void Game::Play() const
 {
+	gameInterface.ShowPlayingMenu();
+
 	while (true)
 	{
-		this->Player1Move();
-		this->Player2Move();
+		if (this->Player1Move())
+		{
+			gameInterface.PlayerWin(1);
+			break;
+		}
+		if (this->Player2Move())
+		{
+			gameInterface.PlayerWin(2);
+			break;
+		}
 	}
 }
 
 void Game::Run() const
 {
-	u_int play = gameInterface.MenuSession();
-	
-	if (play)
+	// gameInterface.MenuSession() - shows menu
+	// and return 0 if player wants to exit
+	while (gameInterface.MenuSession())
 	{
-		system("cls");
+		gameComponents->GamingField()->RefreshField();
 		this->Play();
 	}
 }

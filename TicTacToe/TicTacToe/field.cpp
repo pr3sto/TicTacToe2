@@ -197,3 +197,8 @@ bool Field::VerifyVictory(COORD move) const
 		CheckRightToLeftDiagonal(move)
 		);
 }
+
+void Field::RefreshField()
+{
+	this->NewField();
+}

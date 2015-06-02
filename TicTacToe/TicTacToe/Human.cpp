@@ -53,6 +53,7 @@ COORD HumanPlayer::Move() const
 
 		start_pos.Y += 2;
 		SetConsoleCursorPosition(hStdOut, start_pos);
+
 		while (true)
 		{
 			std::cout << "Введите координату y: ";
@@ -77,15 +78,15 @@ COORD HumanPlayer::Move() const
 			FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
 		}
 
+		// set cursor + clean line
+		SetConsoleCursorPosition(hStdOut, start_pos);
+		FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
+		start_pos.Y -= 2;
+		SetConsoleCursorPosition(hStdOut, start_pos);
+		FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
+
 		if ((*field)[ret.X][ret.Y] != 0)
 		{
-			// set cursor + clean line
-			SetConsoleCursorPosition(hStdOut, start_pos);
-			FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
-			start_pos.Y -= 2;
-			SetConsoleCursorPosition(hStdOut, start_pos);
-			FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
-
 			std::cout << "Позиция занята!";
 			std::cin.get();
 
@@ -96,4 +97,13 @@ COORD HumanPlayer::Move() const
 	}
 	
 	return ret;
+}
+
+void HumanPlayer::Info() const
+{
+	std::cout
+		<< std::setw(58) << "      1. Бот HumanPlayer         " << std::endl << std::endl
+		<< std::setw(58) << "бот для ввода координат человеком" << std::endl
+		<< std::setw(58) << "        Автор - pr3sto           " << std::endl
+		<< std::setw(58) << "             2015                " << std::endl << std::endl << std::endl;
 }

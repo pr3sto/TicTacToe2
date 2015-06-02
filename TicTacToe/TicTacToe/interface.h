@@ -27,6 +27,9 @@ private:
 	void ShowMainMenu() const;
 	void ShowGamingField() const;
 	void ShowPlayingInfo() const;
+	
+	void ShowBotsInfo() const;
+	void ShowInfo() const;
 
 
 	void SettingsMenuSession() const;
@@ -52,9 +55,11 @@ public:
 	// @retrun 1 - play game
 	u_int MenuSession() const;
 
+	void ShowPlayingMenu() const;
 	// u_int = 1 / 2  -  player1's / player2's  move
-	void ShowPlayingMenu(u_int) const;
+	void ShowPlayersMoveMenu(u_int) const;
 	void ShowPlayerMove(u_int, COORD) const;
+	void PlayerWin(u_int) const;
 };
 
 #endif // INTERFACE_H_

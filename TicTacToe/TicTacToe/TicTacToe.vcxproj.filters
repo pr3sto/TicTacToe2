@@ -54,6 +54,9 @@
     <ClCompile Include="player.cpp">
       <Filter>Source Files\Players</Filter>
     </ClCompile>
+    <ClCompile Include="example_bot.cpp">
+      <Filter>Source Files\Players</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files\GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="human.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="example_bot.h">
       <Filter>Header Files\Players</Filter>
     </ClInclude>
   </ItemGroup>

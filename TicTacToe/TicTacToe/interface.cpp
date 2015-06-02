@@ -61,14 +61,8 @@ void Interface::ShowGamingField() const
 		cout << setw(38 + space) << "\xb3";
 		for (u_int j = 0; j < sizeOfField; ++j)
 		{
-			SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightRed));
-			if ((*gameComponents->GamingField())[j][i] == 1) cout << " X ";
-			else if ((*gameComponents->GamingField())[j][i] == 2) cout << " O ";
-			else
-			{
-				SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | Blue));
-				cout << j << "," << i;
-			}
+			SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | Blue));
+			cout << j << "," << i;
 			SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightGray));
 			cout << "\xb3";
 		}
@@ -122,26 +116,31 @@ void Interface::ShowPlayingInfo() const
 	cout << gameComponents->GamingField()->SizeOfWinRow();
 }
 
-void Interface::ShowPlayingMenu(u_int player) const
+void Interface::ShowPlayingMenu() const
 {
 	system("cls");
 
+	this->ShowGamingField();
+	this->ShowPlayingInfo();
+}
+
+void Interface::ShowPlayersMoveMenu(u_int player) const
+{
 	if (player != 1 && player != 2)
 	{
 		std::cerr << "Error! Invalid argument in void Interface::ShowPlayingMenu(u_int).";
 		exit(1);
 	}
 
-	this->ShowGamingField();
-	this->ShowPlayingInfo();
-
 	// for working with cursor
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD Written = 0;
 	// coordinates of cursor
 	COORD coord;
 
 	coord.X = 5; coord.Y = 11;
 	SetConsoleCursorPosition(hStdOut, coord);
+	FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
 	cout << "Ход:";
 	coord.X = 10; coord.Y = 11;
 	SetConsoleCursorPosition(hStdOut, coord);
@@ -158,11 +157,80 @@ void Interface::ShowPlayingMenu(u_int player) const
 
 void Interface::ShowPlayerMove(u_int player, COORD move) const
 {
-	this->ShowPlayingMenu(player);
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	
+	// coordinates of cursor
+	COORD coord;
+	coord.X = 5; coord.Y = 13;
+	SetConsoleCursorPosition(hStdOut, coord);
 
 	cout << "Ход в клетку (" << move.X << ", " << move.Y << ") ";
 
+	// symbol on the field
+	u_int sizeOfField = gameComponents->GamingField()->SizeOfField();
+	u_int space = (10 - sizeOfField) * 2 + 38;
+	COORD position;
+
+	if (sizeOfField < 5)
+		position.Y = 5 + move.Y * 2;
+	else if (sizeOfField < 7)
+		position.Y = 4 + move.Y * 2;
+	else if (sizeOfField < 9)
+		position.Y = 3 + move.Y * 2;
+	else
+		position.Y = 2 + move.Y * 2;
+	
+
+	position.X = space + 4 * move.X;
+
+	SetConsoleCursorPosition(hStdOut, position);
+	SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightRed));
+	if (player == 1) cout << " X ";
+	else if (player == 2) cout << " O ";
+	SetConsoleTextAttribute(hStdOut, (WORD)((Black << 4) | LightGray));
+
+	coord.X = 24; coord.Y = 13;
+	SetConsoleCursorPosition(hStdOut, coord);
 	std::cin.get();
+}
+
+void Interface::PlayerWin(u_int player) const
+{
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD Written = 0;
+
+	// coordinates of cursor
+	COORD coord;
+	coord.X = 5; coord.Y = 11;
+
+	// set cursor + clean line
+	SetConsoleCursorPosition(hStdOut, coord);
+	FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
+	coord.Y += 2;
+	SetConsoleCursorPosition(hStdOut, coord);
+	FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
+	
+	coord.X = 10; coord.Y = 12;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	cout << "Игра окончена!";
+
+	coord.X = 0; coord.Y = 14;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	std::string winner = "Победил(а) ";
+	if (player == 1)
+		winner += gameComponents->Player1()->GetPlayerName();
+	else if (player == 2)
+		winner += gameComponents->Player2()->GetPlayerName();
+	winner += "!";
+
+	u_int width = 17 + winner.size() / 2;
+	cout << setw(width) << winner;
+
+	cin.get();
 }
 
 void Interface::ShowMainMenu() const 
@@ -250,7 +318,7 @@ void Interface::ShowBots() const
 	int counter = 1;
 	std::vector<Player*> tmp = gameComponents->VectorOfBots();
 
-	for (vecOfPlayersIter i = tmp.begin(); i != tmp.end(); ++i, ++counter)
+	for (auto i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
 		u_int width = 40 - (*i)->GetPlayerName().size() / 2;
 		cout << setw(width) << counter << ". " << (*i)->GetPlayerName() << endl;
@@ -456,7 +524,7 @@ u_int Interface::MenuSession() const
 			//TODO: write stats func
 			break;
 		case 4: // info
-			//TODO: write info func
+			this->ShowInfo();
 			break;
 		case 5: // exit
 			return 0;
@@ -464,4 +532,56 @@ u_int Interface::MenuSession() const
 			break;
 		}
 	}
+}
+
+void Interface::ShowBotsInfo() const
+{
+	gameComponents->VectorOfHumans()[0]->Info();
+	cout << endl;
+	
+	u_int width;
+	u_int counter = 2;
+
+	auto bots = gameComponents->VectorOfBots();
+	for (auto i = bots.begin(); i != bots.end(); ++i, ++counter)
+	{
+		width = 37 - (*i)->GetPlayerName().size() / 2;
+		cout << setw(width) << counter << ". Бот " << (*i)->GetPlayerName() << endl << endl;
+		(*i)->Info();
+		cout << endl << endl << endl;
+	}
+}
+
+void Interface::ShowInfo() const
+{
+	system("cls");
+	this->ShowLogo();
+	cout << endl;
+
+	cout << setw(44) << "Об игре:" << endl << endl
+		<< setw(75) << "Крестики - нолики  —  логическая  игра  между  двумя  противниками  " << endl << endl
+		<< setw(75) << "на квадратном поле любого размера (вплоть до «бесконечного поля»).  " << endl << endl
+		<< setw(75) << "Один из игроков играет  «крестиками» (X), второй — «ноликами» (O).  " << endl << endl
+		<< endl << endl
+		<< setw(46) << "Правила игры:" << endl << endl
+		<< setw(75) << "Игроки  по  очереди ставят  на  свободные клетки  поля  знаки (один " << endl << endl
+		<< setw(75) << "всегда крестики,  другой всегда нолики).  Первый, выстроивший в ряд " << endl << endl
+		<< setw(75) << "N своих фигур по  вертикали, горизонтали или диагонали, выигрывает. " << endl << endl
+		<< setw(75) << "Первый ход делает игрок, ставящий крестики.                         " << endl << endl
+		<< endl << endl
+		<< setw(46) << "Автор: pr3sto" << endl << endl
+		<< setw(42) << "2015" << endl << endl
+		<< endl << endl << endl
+		<< setw(43) << "Боты:" << endl << endl;
+       	 
+	this->ShowBotsInfo();
+
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// coordinates of cursor
+	COORD coord;
+	coord.X = 0; coord.Y = 0;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	cin.get();
 }

@@ -9,8 +9,8 @@
 #include "field.h"
 #include "player.h"
 #include "human.h"
+#include "example_bot.h"
 
-typedef std::vector<Player*>::iterator vecOfPlayersIter;
 
 // all players (human + bots)
 class Players
@@ -33,7 +33,7 @@ class GameComponents
 {
 private:
 	Field* field;
-	Players* players;  // vector of pointers to all bots
+	Players* players;  // vector of pointers to all players
 	Player* player1; // pointer to player 1
 	Player* player2; // pointer to player 2
 

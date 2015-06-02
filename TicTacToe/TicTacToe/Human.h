@@ -12,5 +12,6 @@ public:
 	~HumanPlayer();
 
 	virtual COORD Move() const;
+	virtual void Info() const;
 };
 #endif // HUMAN_H_

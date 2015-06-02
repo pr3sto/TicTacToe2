@@ -6,6 +6,7 @@
 #include <string>
 #include "windows.h"
 #include "field.h"
+#include <iomanip>
 
 class Player
 {
@@ -25,6 +26,8 @@ public:
 
 	// player's move
 	virtual COORD Move() const =0;
+
+	virtual void Info() const;
 };
 
 #endif // PLAYER_H_

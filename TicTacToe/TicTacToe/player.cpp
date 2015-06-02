@@ -25,3 +25,8 @@ void Player::SetPlayerName(std::string playerName_)
 	u_int tmp = min(playerName_.size(), 12);
 	playerName = std::string(playerName_.begin(), playerName_.begin() + tmp);
 }
+
+void Player::Info() const
+{
+	std::cout << "No info." << std::endl;
+}

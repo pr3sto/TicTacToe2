@@ -5,7 +5,6 @@
 
 #include "game_components.h"
 #include "interface.h"
-#include "player.h"
 
 class Game
 {
@@ -14,8 +13,8 @@ private:
 	Interface gameInterface;
 
 	void Play() const;
-	void Player1Move() const;
-	void Player2Move() const;
+	bool Player1Move() const;
+	bool Player2Move() const;
 
 public:
 	Game();

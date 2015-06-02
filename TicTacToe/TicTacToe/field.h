@@ -56,6 +56,8 @@ public:
 	// COORD - coordinates of player's move
 	//         that can cause victory
 	bool VerifyVictory(COORD) const;
+
+	void RefreshField();
 };
 
 #endif // FIELD_H_

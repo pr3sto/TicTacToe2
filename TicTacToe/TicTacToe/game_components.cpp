@@ -17,15 +17,15 @@ Players::Players(FieldInfo* field_)
 	humans.push_back(new HumanPlayer(field_, "Игрок 2")); // human for player2
 
 	//TODO: add bots - just push it :/
-	bots.push_back(new HumanPlayer(field_, "Example"));
+	bots.push_back(new ExampleBot(field_));
 }
 
 Players::~Players()
 {
-	for (vecOfPlayersIter i = humans.begin(); i != humans.end(); ++i)
+	for (auto i = humans.begin(); i != humans.end(); ++i)
 		delete (*i);
 
-	for (vecOfPlayersIter i = bots.begin(); i != bots.end(); ++i)
+	for (auto i = bots.begin(); i != bots.end(); ++i)
 		delete (*i);
 }
 
