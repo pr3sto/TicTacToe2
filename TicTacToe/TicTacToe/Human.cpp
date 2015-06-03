@@ -2,10 +2,12 @@
 
 #include "human.h"
 
-HumanPlayer::HumanPlayer(FieldInfo* field_, std::string playerName_) :
-	Player(field_, playerName_) { }
+HumanPlayer::HumanPlayer(FieldInfo* _field, std::string _player_name) :
+	Player(_field, _player_name) 
+{}
 
-HumanPlayer::~HumanPlayer() { }
+HumanPlayer::~HumanPlayer() 
+{}
 
 COORD HumanPlayer::Move() const
 { 
@@ -16,28 +18,29 @@ COORD HumanPlayer::Move() const
 
 	COORD coord;     // coordinates of cursor
 	COORD ret;       // retrun coordinates
-	COORD start_pos; // start position of cursor
+	COORD position;  // position of cursor
 
-	u_int sizeOfField = field->SizeOfField();
+	int size_of_field = field->size_of_field();
 
 	// get current coordinates of cursor
 	GetConsoleScreenBufferInfo(hStdOut, &csbiInfo);
-	start_pos.X = csbiInfo.dwCursorPosition.X;
-	start_pos.Y = csbiInfo.dwCursorPosition.Y;
+	position.X = csbiInfo.dwCursorPosition.X;
+	position.Y = csbiInfo.dwCursorPosition.Y;
 
 	while (true)
 	{
+		// get x coordinate
 		while (true)
 		{
 			std::cout << "Введите координату x: ";
 
 			// get current coordinates of cursor
 			GetConsoleScreenBufferInfo(hStdOut, &csbiInfo);
-			coord.X = start_pos.X;
+			coord.X = position.X;
 			coord.Y = csbiInfo.dwCursorPosition.Y;
 
 			std::cin >> ret.X;
-			if (std::cin.good() && ret.X >= 0 && ret.X < sizeOfField)
+			if (std::cin.good() && ret.X >= 0 && ret.X < size_of_field)
 			{
 				std::cin.ignore(10, '\n');
 				break;
@@ -46,25 +49,26 @@ COORD HumanPlayer::Move() const
 			std::cin.clear();
 			std::cin.ignore(10, '\n');
 
-			// set cursor + clean line
+			// set cursor to start position + clean line
 			SetConsoleCursorPosition(hStdOut, coord);
 			FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
 		}
 
-		start_pos.Y += 2;
-		SetConsoleCursorPosition(hStdOut, start_pos);
+		position.Y += 2;
+		SetConsoleCursorPosition(hStdOut, position);
 
+		// get y coordinate
 		while (true)
 		{
 			std::cout << "Введите координату y: ";
 
 			// get current coordinates of cursor
 			GetConsoleScreenBufferInfo(hStdOut, &csbiInfo);
-			coord.X = start_pos.X;
+			coord.X = position.X;
 			coord.Y = csbiInfo.dwCursorPosition.Y;
 
 			std::cin >> ret.Y;
-			if (std::cin.good() && ret.Y >= 0 && ret.Y < sizeOfField)
+			if (std::cin.good() && ret.Y >= 0 && ret.Y < size_of_field)
 			{
 				std::cin.ignore(10, '\n');
 				break;
@@ -73,27 +77,30 @@ COORD HumanPlayer::Move() const
 			std::cin.clear();
 			std::cin.ignore(10, '\n');
 
-			// set cursor + clean line
+			// set cursor to start position + clean line
 			SetConsoleCursorPosition(hStdOut, coord);
 			FillConsoleOutputCharacter(hStdOut, ' ', 31, coord, &Written);
 		}
 
-		// set cursor + clean line
-		SetConsoleCursorPosition(hStdOut, start_pos);
-		FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
-		start_pos.Y -= 2;
-		SetConsoleCursorPosition(hStdOut, start_pos);
-		FillConsoleOutputCharacter(hStdOut, ' ', 31, start_pos, &Written);
+		// clean lines
+		SetConsoleCursorPosition(hStdOut, position);
+		FillConsoleOutputCharacter(hStdOut, ' ', 31, position, &Written);
+		position.Y -= 2;
+		SetConsoleCursorPosition(hStdOut, position);
+		FillConsoleOutputCharacter(hStdOut, ' ', 31, position, &Written);
 
 		if ((*field)[ret.X][ret.Y] != 0)
 		{
 			std::cout << "Позиция занята!";
 			std::cin.get();
 
-			SetConsoleCursorPosition(hStdOut, start_pos);
+			// set cursor to start position
+			SetConsoleCursorPosition(hStdOut, position);
 		}
 		else
+		{
 			break;
+		}
 	}
 	
 	return ret;
@@ -104,6 +111,6 @@ void HumanPlayer::Info() const
 	std::cout
 		<< std::setw(58) << "      1. Бот HumanPlayer         " << std::endl << std::endl
 		<< std::setw(58) << "бот для ввода координат человеком" << std::endl
-		<< std::setw(58) << "        Автор - pr3sto           " << std::endl
+		<< std::setw(58) << "         Автор: pr3sto           " << std::endl
 		<< std::setw(58) << "             2015                " << std::endl << std::endl << std::endl;
 }

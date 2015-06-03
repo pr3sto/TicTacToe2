@@ -4,96 +4,103 @@
 
 FieldInfo::FieldInfo()
 {
-	sizeOfField = 3;
-	sizeOfWinRow = 3;
-	oldSizeOfField = 3;
-	gamingField = nullptr;
+	size_of_field_ = 3;
+	size_of_win_row_ = 3;
+	old_size_of_field_ = 3;
+	gaming_field_ = nullptr;
 
 	this->NewField();
 }
 
 FieldInfo::~FieldInfo()
 {
-	sizeOfField = oldSizeOfField;
+	size_of_field_ = old_size_of_field_;
 	this->DeleteField();
 }
 
 void FieldInfo::NewField()
 {
-	if (gamingField != nullptr)
+	if (gaming_field_ != nullptr)
 		this->DeleteField();
 
-	gamingField = new u_int*[sizeOfField];
-	for (u_int i = 0; i < sizeOfField; ++i)
-		gamingField[i] = new u_int[sizeOfField];
+	gaming_field_ = new int*[size_of_field_];
+	for (int i = 0; i < size_of_field_; ++i)
+		gaming_field_[i] = new int[size_of_field_];
 
-	for (u_int i = 0; i < sizeOfField; ++i)
-	for (u_int j = 0; j < sizeOfField; ++j)
-		gamingField[i][j] = 0;
+	for (int i = 0; i < size_of_field_; ++i)
+		for (int j = 0; j < size_of_field_; ++j)
+			gaming_field_[i][j] = 0;
 }
 
 void FieldInfo::DeleteField()
 {
-	for (u_int i = 0; i < oldSizeOfField; ++i)
-		delete[] gamingField[i];
-	delete[] gamingField;
+	for (int i = 0; i < old_size_of_field_; ++i)
+		delete[] gaming_field_[i];
+	delete[] gaming_field_;
 }
 
-u_int FieldInfo::SizeOfField() const
+int FieldInfo::size_of_field() const
 { 
-	return sizeOfField; 
+	return size_of_field_;
 }
 
-u_int FieldInfo::SizeOfWinRow() const
+int FieldInfo::size_of_win_row() const
 { 
-	return sizeOfWinRow; 
+	return size_of_win_row_;
 }
 
-const u_int* FieldInfo::operator[](u_int i) const
+const int* FieldInfo::operator[](int x) const
 {
-	return gamingField[i];
+	return gaming_field_[x];
 }
 
 
 
-void Field::SetSizeOfField(u_int new_sz)
+void Field::RefreshField()
 {
-	if (new_sz < MIN_SIZE_OF_FIEFD || new_sz > MAX_SIZE_OF_FIEFD)
+	for (int i = 0; i < size_of_field_; ++i)
+		for (int j = 0; j < size_of_field_; ++j)
+			gaming_field_[i][j] = 0;
+}
+
+void Field::set_size_of_field(int new_size)
+{
+	if (new_size < MIN_SIZE_OF_FIEFD || new_size > MAX_SIZE_OF_FIEFD)
 		return;
 
-	oldSizeOfField = sizeOfField;
-	sizeOfField = new_sz;
+	old_size_of_field_ = size_of_field_;
+	size_of_field_ = new_size;
 
-	if (sizeOfField < sizeOfWinRow)
-		sizeOfWinRow = MIN_SIZE_OF_WIN_ROW;
+	if (size_of_field_ < size_of_win_row_)
+		size_of_win_row_ = MIN_SIZE_OF_WIN_ROW;
 
 	this->NewField();
 }
 
-void Field::SetSizeOfWinRow(u_int new_sz)
+void Field::set_size_of_win_row(int new_size)
 {
-	if (new_sz < MIN_SIZE_OF_WIN_ROW || new_sz > MAX_SIZE_OF_WIN_ROW)
+	if (new_size < MIN_SIZE_OF_WIN_ROW || new_size > MAX_SIZE_OF_WIN_ROW)
 		return;
 
-	sizeOfWinRow = new_sz;
+	size_of_win_row_ = new_size;
 
-	if (sizeOfWinRow > sizeOfField)
-		sizeOfWinRow = MIN_SIZE_OF_WIN_ROW;
+	if (size_of_win_row_ > size_of_field_)
+		size_of_win_row_ = MIN_SIZE_OF_WIN_ROW;
 }
 
-u_int* Field::operator[](u_int i) const
+int* Field::operator[](int x) const
 {
-	return gamingField[i];
+	return gaming_field_[x];
 }
 
-bool Field::VerifyMove(u_int player, COORD move) const
+bool Field::CheckMove(int player, COORD move) const
 {
-	if (move.X < 0 || move.X >= sizeOfField || move.Y < 0 || move.Y >= sizeOfField)
+	if (move.X < 0 || move.X >= size_of_field_ || move.Y < 0 || move.Y >= size_of_field_)
 		return false;
 
-	if (gamingField[move.X][move.Y] == 0)
+	if (gaming_field_[move.X][move.Y] == 0)
 	{
-		gamingField[move.X][move.Y] = player;
+		gaming_field_[move.X][move.Y] = player;
 		return true;
 	}
 	else
@@ -102,93 +109,114 @@ bool Field::VerifyMove(u_int player, COORD move) const
 
 bool Field::CheckLine(COORD move) const
 {
-	u_int counter = 0;
-	u_int player = gamingField[move.X][move.Y];
+	// counter of figures in a row
+	int counter = 0;
+	// player, that make this move (1 - player1, 2 - player2)
+	int player = gaming_field_[move.X][move.Y];
 
-	for (u_int i = 0; i < sizeOfField; ++i)
+	for (int i = 0; i < size_of_field_; ++i)
 	{
-		if (gamingField[i][move.Y] == player) counter++;
+		if (gaming_field_[i][move.Y] == player)
+		{
+			counter++;
+		}
 		else
 		{
-			if (counter < sizeOfWinRow) counter = 0;
+			if (counter < size_of_win_row_) counter = 0;
 			else return true;
 		}
 	}
 
-	return (counter >= sizeOfWinRow ? true : false);
+	return (counter >= size_of_win_row_ ? true : false);
 }
 
 bool Field::CheckColumn(COORD move) const
 {
-	u_int counter = 0;
-	u_int player = gamingField[move.X][move.Y];
+	// counter of figures in a row
+	int counter = 0;
+	// player, that make this move (1 - player1, 2 - player2)
+	int player = gaming_field_[move.X][move.Y];
 
-	for (u_int i = 0; i < sizeOfField; ++i)
+	for (int i = 0; i < size_of_field_; ++i)
 	{
-		if (gamingField[move.X][i] == player) counter++;
+		if (gaming_field_[move.X][i] == player)
+		{
+			counter++;
+		}
 		else
 		{
-			if (counter < sizeOfWinRow) counter = 0;
+			if (counter < size_of_win_row_) counter = 0;
 			else return true;
 		}
 	}
 
-	return (counter >= sizeOfWinRow ? true : false);
+	return (counter >= size_of_win_row_ ? true : false);
 }
 
 bool Field::CheckLeftToRightDiagonal(COORD move) const
 {
-	u_int counter = 0;
-	u_int player = gamingField[move.X][move.Y];
+	// counter of figures in a row
+	int counter = 0;
+	// player, that make this move (1 - player1, 2 - player2)
+	int player = gaming_field_[move.X][move.Y];
 
 	COORD position; // start position - upper left corner of diagonal
 	position.X = move.X - min(move.X, move.Y);
 	position.Y = move.Y - min(move.X, move.Y);
 
-	for (; (position.X < sizeOfField && position.Y < sizeOfField); position.X++, position.Y++)
+	for (; (position.X < size_of_field_ && position.Y < size_of_field_); position.X++, position.Y++)
 	{
-		if (gamingField[position.X][position.Y] == player) counter++;
+		if (gaming_field_[position.X][position.Y] == player)
+		{
+			counter++;
+		}
 		else
 		{
-			if (counter < sizeOfWinRow) counter = 0;
+			if (counter < size_of_win_row_) counter = 0;
 			else return true;
 		}
 	}
 
-	return (counter >= sizeOfWinRow ? true : false);
+	return (counter >= size_of_win_row_ ? true : false);
 }
 
 bool Field::CheckRightToLeftDiagonal(COORD move) const
 {
-	u_int counter = 0;
-	u_int player = gamingField[move.X][move.Y];
+	// counter of figures in a row
+	int counter = 0;
+	// player, that make this move (1 - player1, 2 - player2)
+	int player = gaming_field_[move.X][move.Y];
 
 	COORD position; // start position - upper right corner of diagonal
-	if (move.X + move.Y <= sizeOfField - 1)
+	if (move.X + move.Y <= size_of_field_ - 1)
 	{
 		position.X = move.X + move.Y;
 		position.Y = 0;
 	}
 	else
 	{
-		position.X = sizeOfField - 1;
-		position.Y = move.Y - (sizeOfField - 1 - move.X);
+		// - 1 because coordinates in programm begin from 0 (not from 1)
+		position.X = size_of_field_ - 1;
+		position.Y = move.Y - (size_of_field_ - move.X - 1);
 	}
 
-	for (; (position.X >= 0 && position.Y < sizeOfField); position.X--, position.Y++)
+	for (; (position.X >= 0 && position.Y < size_of_field_); position.X--, position.Y++)
 	{
-		if (gamingField[position.X][position.Y] == player) counter++;
+		if (gaming_field_[position.X][position.Y] == player)
+		{
+			counter++;
+		}
 		else
 		{
-			if (counter < sizeOfWinRow) counter = 0;
+			if (counter < size_of_win_row_) counter = 0;
 			else return true;
 		}
 	}
 
-	return (counter >= sizeOfWinRow ? true : false);
+	return (counter >= size_of_win_row_ ? true : false);
 }
 
-bool Field::VerifyVictory(COORD move) const
+bool Field::CheckForWin(COORD move) const
 {
 	return (
 		CheckLine(move) ||
@@ -198,7 +226,3 @@ bool Field::VerifyVictory(COORD move) const
 		);
 }
 
-void Field::RefreshField()
-{
-	this->NewField();
-}

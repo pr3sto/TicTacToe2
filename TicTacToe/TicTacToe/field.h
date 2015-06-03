@@ -3,61 +3,90 @@
 #ifndef FIELD_H_
 #define FIELD_H_
 
-#include <memory> // std::shared_ptr
-#include <iostream>
-#include "windows.h"
+#include "windows.h" // COORD - coordinates on the field
 
+// information about gaming field
+// without permission to change something
 class FieldInfo
 {
 protected:
-	u_int** gamingField;
-	u_int sizeOfField;
-	u_int sizeOfWinRow;
-	u_int oldSizeOfField; // for correct deletion
+	int** gaming_field_;
+	int size_of_field_;
+	int size_of_win_row_;   // number of figures in row to win
+	int old_size_of_field_; // for correct deletion
 
 	void NewField();
 	void DeleteField();
 
 public:
+	const int MAX_SIZE_OF_FIEFD = 10;
+	const int MIN_SIZE_OF_FIEFD = 3;
+	const int MAX_SIZE_OF_WIN_ROW = 10;
+	const int MIN_SIZE_OF_WIN_ROW = 3;
+
 	FieldInfo();
 	~FieldInfo();
 
-	const u_int MAX_SIZE_OF_FIEFD = 10;
-	const u_int MIN_SIZE_OF_FIEFD = 3;
-	const u_int MAX_SIZE_OF_WIN_ROW = 10;
-	const u_int MIN_SIZE_OF_WIN_ROW = 3;
-
 	// getters
-	u_int SizeOfField() const;
-	u_int SizeOfWinRow() const;
+	int size_of_field() const;
+	int size_of_win_row() const;
 
-	// const to prohibit changing
-	const u_int* operator[](u_int) const;
+	// dont check index out of bounds
+	// const - to prohibit changing
+	//
+	// usage: 
+	// FieldInfo field; 
+	// int value_of_field_cell = field[0][0];	
+	const int* operator[](int x) const;
 };
 
+
+
+// information about gaming field
+// with the possibility of change something
 class Field : public FieldInfo
 {
 private:
-	// additional functions for VerifyVictory
-	bool CheckLine(COORD) const;
-	bool CheckColumn(COORD) const;
-	bool CheckLeftToRightDiagonal(COORD) const;
-	bool CheckRightToLeftDiagonal(COORD) const;
+	// additional functions for CheckForWin
+
+	// x x
+	// _ _
+	bool CheckLine(COORD move) const;
+	// x _
+	// x _
+	bool CheckColumn(COORD move) const;
+	// x _
+	// _ x
+	bool CheckLeftToRightDiagonal(COORD move) const;
+	// _ x
+	// x _
+	bool CheckRightToLeftDiagonal(COORD move) const;
 
 public:
-	// setters
-	void SetSizeOfField(u_int);
-	void SetSizeOfWinRow(u_int);
-
-	u_int* operator[](u_int) const;
-
-	bool VerifyMove(u_int, COORD) const;
-
-	// COORD - coordinates of player's move
-	//         that can cause victory
-	bool VerifyVictory(COORD) const;
-
+	// erase all figures from field
 	void RefreshField();
+
+	// setters
+	void set_size_of_field(int new_size);
+	void set_size_of_win_row(int new_size);
+
+	// dont check index out of bounds
+	//
+	// usage: 
+	// Field field; 
+	// int new_value = 42;
+	// int value_of_field_cell = field[0][0];
+	// field[0][0] = new_value;
+	int* operator[](int x) const;
+
+	// check posibility to make move in cell 'move'
+	// and make this move (move by player)
+	bool CheckMove(int player, COORD move) const;
+
+	// 'move' - coordinates of player's move
+	// that can cause victory
+	// @return true if player, that make this move, win
+	bool CheckForWin(COORD move) const;
 };
 
 #endif // FIELD_H_

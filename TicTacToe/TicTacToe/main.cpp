@@ -1,6 +1,7 @@
 // main.cpp - main file of project
 
 #include "game.h"
+#include "windows.h" // for language
 
 int main()
 {

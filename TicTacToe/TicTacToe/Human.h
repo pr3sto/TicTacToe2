@@ -5,10 +5,11 @@
 
 #include "player.h"
 
+// class for Humans - input data from human
 class HumanPlayer : public Player
 {
 public:
-	HumanPlayer(FieldInfo* field_, std::string playerName_);
+	HumanPlayer(FieldInfo* _field, std::string _player_name);
 	~HumanPlayer();
 
 	virtual COORD Move() const;

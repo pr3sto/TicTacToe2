@@ -3,30 +3,32 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include <string>
-#include "windows.h"
-#include "field.h"
+#include <iostream>
 #include <iomanip>
+#include <string>
+#include "field.h"
 
+// abstract class for all bots
 class Player
 {
 protected:
 	FieldInfo* field;
-	std::string playerName;
+	std::string player_name_; // maxlength of player name = 12
 
 public:
-	Player(FieldInfo* field_, std::string playerName_);
+	Player(FieldInfo* _field, std::string _player_name);
 	virtual ~Player();
 
 	// getter
-	std::string GetPlayerName() const;
+	std::string player_name() const;
 
 	// setter
-	void SetPlayerName(std::string playerName_);
+	void set_player_name(std::string new_name);
 
 	// player's move
 	virtual COORD Move() const =0;
 
+	// Info about this bot
 	virtual void Info() const;
 };
 

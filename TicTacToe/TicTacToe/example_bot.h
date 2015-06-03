@@ -3,14 +3,15 @@
 #ifndef EXAMPLE_BOT_H_
 #define EXAMPLE_BOT_H_
 
-#include "player.h"
 #include <random>
 #include <vector>
+#include "player.h"
 
+// bot, that moves randomly
 class ExampleBot : public Player
 {
 public:
-	ExampleBot(FieldInfo* field_);
+	ExampleBot(FieldInfo* _field);
 	~ExampleBot();
 
 	virtual COORD Move() const;
