@@ -80,5 +80,8 @@
     <ClInclude Include="example_bot.h">
       <Filter>Header Files\Players</Filter>
     </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

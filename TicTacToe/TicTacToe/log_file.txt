@@ -1,0 +1,18 @@
+Date and Time: Thu Jun 04 21:31:34 2015
+Error: Incorrect argument (second)
+In function: void Interface::ShowFigureOnField(int player, COORD cell, ConsoleColor color) const
+Info: cell = 0, -1
+Programm action: exit(1)
+---------------------------
+Date and Time: Thu Jun 04 21:33:17 2015
+Error: Incorrect argument (second)
+In function: void Interface::ShowFigureOnField(int player, COORD cell, ConsoleColor color) const
+Info: cell = 0, -1
+Programm action: exit(1)
+---------------------------
+Date and Time: Thu Jun 04 23:08:48 2015
+Error: Incorrect argument
+In function: void Player::set_player_name(std::string new_name)
+Info: new_name is empty string
+Programm action: Exit from function, continue programm
+---------------------------

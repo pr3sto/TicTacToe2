@@ -3,7 +3,9 @@
 #ifndef FIELD_H_
 #define FIELD_H_
 
+#include <utility>   // std::pair
 #include "windows.h" // COORD - coordinates on the field
+#include "log.h" 
 
 // information about gaming field
 // without permission to change something
@@ -12,8 +14,8 @@ class FieldInfo
 protected:
 	int** gaming_field_;
 	int size_of_field_;
-	int size_of_win_row_;   // number of figures in row to win
-	int old_size_of_field_; // for correct deletion
+	int size_of_winning_row_;   // number of figures in row to win
+	int old_size_of_field_;     // for correct deletion
 
 	void NewField();
 	void DeleteField();
@@ -21,15 +23,15 @@ protected:
 public:
 	const int MAX_SIZE_OF_FIEFD = 10;
 	const int MIN_SIZE_OF_FIEFD = 3;
-	const int MAX_SIZE_OF_WIN_ROW = 10;
-	const int MIN_SIZE_OF_WIN_ROW = 3;
+	const int MAX_SIZE_OF_WINNING_ROW = 10;
+	const int MIN_SIZE_OF_WINNING_ROW = 3;
 
 	FieldInfo();
 	~FieldInfo();
 
 	// getters
 	int size_of_field() const;
-	int size_of_win_row() const;
+	int size_of_winning_row() const;
 
 	// dont check index out of bounds
 	// const - to prohibit changing
@@ -68,7 +70,7 @@ public:
 
 	// setters
 	void set_size_of_field(int new_size);
-	void set_size_of_win_row(int new_size);
+	void set_size_of_winning_row(int new_size);
 
 	// dont check index out of bounds
 	//
@@ -87,6 +89,10 @@ public:
 	// that can cause victory
 	// @return true if player, that make this move, win
 	bool CheckForWin(COORD move) const;
+
+	// return coordinates of ends of winning row
+	// player = 1 / 2 - player1 / player2 win
+	std::pair<COORD, COORD> EndsOfWinningRow(int player) const;
 };
 
 #endif // FIELD_H_

@@ -43,6 +43,8 @@ COORD HumanPlayer::Move() const
 			if (std::cin.good() && ret.X >= 0 && ret.X < size_of_field)
 			{
 				std::cin.ignore(10, '\n');
+				std::cin.clear();
+				_flushall();
 				break;
 			}
 
@@ -71,6 +73,8 @@ COORD HumanPlayer::Move() const
 			if (std::cin.good() && ret.Y >= 0 && ret.Y < size_of_field)
 			{
 				std::cin.ignore(10, '\n');
+				std::cin.clear();
+				_flushall();
 				break;
 			}
 
@@ -93,6 +97,8 @@ COORD HumanPlayer::Move() const
 		{
 			std::cout << "Позиция занята!";
 			std::cin.get();
+			std::cin.clear();
+			_flushall();
 
 			// set cursor to start position
 			SetConsoleCursorPosition(hStdOut, position);

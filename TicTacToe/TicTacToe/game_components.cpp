@@ -7,6 +7,16 @@ Players::Players()
 
 Players::Players(FieldInfo* field_)
 {
+	if (field_ == nullptr)
+	{
+		std::string err = "Incorrect argument";
+		std::string func = "Players::Players(FieldInfo* field_)";
+		std::string info = "field_ = NULL pointer";
+		std::string act = "exit(1)";
+		Log::write_log(err, func, info, act);
+		exit(1);
+	}
+
 	humans_.push_back(new HumanPlayer(field_, "Игрок 1")); // human for player1
 	humans_.push_back(new HumanPlayer(field_, "Игрок 2")); // human for player2
 
@@ -76,12 +86,34 @@ std::vector<Player*> GameComponents::vector_of_humans() const
 
 void GameComponents::set_player1(Player* _player1)
 {
-	if (_player1 != nullptr) 
+	if (_player1 == nullptr)
+	{
+		std::string err = "Incorrect argument";
+		std::string func = "void GameComponents::set_player1(Player* _player1)";
+		std::string info = "_player1 = NULL pointer";
+		std::string act = "Exit from function, continue programm";
+		Log::write_log(err, func, info, act);
+		return;
+	}
+	else
+	{
 		player1_ = _player1;
+	}
 }
 
 void GameComponents::set_player2(Player* _player2)
 {
-	if (_player2 != nullptr)
+	if (_player2 == nullptr)
+	{
+		std::string err = "Incorrect argument";
+		std::string func = "void GameComponents::set_player2(Player* _player2)";
+		std::string info = "_player2 = NULL pointer";
+		std::string act = "Exit from function, continue programm";
+		Log::write_log(err, func, info, act);
+		return;
+	}
+	else
+	{
 		player2_ = _player2;
+	}
 }

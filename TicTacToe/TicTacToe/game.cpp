@@ -20,8 +20,14 @@ bool Game::Player1Move() const
 
 	if (!game_components->field()->CheckMove(1, player1_move))
 	{
-		std::cerr << "Error: wrong move from player: ";
-		std::cerr << game_components->player1()->player_name();
+		std::string err = "Wrong move from player";
+		std::string func = "bool Game::Player1Move() const, ";
+		func +=	"COORD player1_move = game_components->player1()->Move()";
+		std::string info = "player1_move = ";
+		info += std::to_string(player1_move.X); info += ", "; 
+		info += std::to_string(player1_move.Y);
+		std::string act = "exit(1)";
+		Log::write_log(err, func, info, act);
 		exit(1);
 	}
 
@@ -37,8 +43,14 @@ bool Game::Player2Move() const
 
 	if (!game_components->field()->CheckMove(2, player2_move))
 	{
-		std::cerr << "Error: wrong move from player: ";
-		std::cerr << game_components->player2()->player_name();
+		std::string err = "Wrong move from player";
+		std::string func = "bool Game::Player2Move() const, ";
+		func += "COORD player2_move = game_components->player2()->Move()";
+		std::string info = "player2_move = ";
+		info += std::to_string(player2_move.X); info += ", ";
+		info += std::to_string(player2_move.Y);
+		std::string act = "exit(1)";
+		Log::write_log(err, func, info, act);
 		exit(1);
 	}
 

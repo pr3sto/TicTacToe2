@@ -92,6 +92,7 @@
     <ClInclude Include="game_components.h" />
     <ClInclude Include="human.h" />
     <ClInclude Include="interface.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

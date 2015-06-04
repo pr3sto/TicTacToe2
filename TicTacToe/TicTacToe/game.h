@@ -5,6 +5,7 @@
 
 #include "game_components.h"
 #include "interface.h"
+#include "log.h"
 
 // object that represent the game
 class Game

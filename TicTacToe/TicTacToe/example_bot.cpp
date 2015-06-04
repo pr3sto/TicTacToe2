@@ -26,7 +26,7 @@ COORD ExampleBot::Move() const
 		}
 	}
 
-	int random_number = std::rand() % (free_cells.size()+1);
+	int random_number = std::rand() % free_cells.size();
 
 	COORD ret;
 	ret.X = free_cells[random_number].X; 
