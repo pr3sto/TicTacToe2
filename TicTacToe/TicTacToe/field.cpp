@@ -14,7 +14,7 @@ FieldInfo::FieldInfo()
 
 FieldInfo::~FieldInfo()
 {
-	size_of_field_ = old_size_of_field_;
+	old_size_of_field_ = size_of_field_;
 	this->DeleteField();
 }
 
@@ -192,15 +192,9 @@ bool Field::CheckColumn(COORD move) const
 
 	for (int i = 0; i < size_of_field_; ++i)
 	{
-		if (gaming_field_[move.X][i] == player)
-		{
-			counter++;
-		}
-		else
-		{
-			if (counter < size_of_winning_row_) counter = 0;
-			else return true;
-		}
+		if (gaming_field_[move.X][i] == player)	counter++;
+		else if (counter < size_of_winning_row_) counter = 0;
+		else return true;
 	}
 
 	return (counter >= size_of_winning_row_ ? true : false);
@@ -230,15 +224,9 @@ bool Field::CheckLeftToRightDiagonal(COORD move) const
 
 	for (; (position.X < size_of_field_ && position.Y < size_of_field_); position.X++, position.Y++)
 	{
-		if (gaming_field_[position.X][position.Y] == player)
-		{
-			counter++;
-		}
-		else
-		{
-			if (counter < size_of_winning_row_) counter = 0;
-			else return true;
-		}
+		if (gaming_field_[position.X][position.Y] == player) counter++;
+		else if (counter < size_of_winning_row_) counter = 0;
+		else return true;
 	}
 
 	return (counter >= size_of_winning_row_ ? true : false);
@@ -277,15 +265,9 @@ bool Field::CheckRightToLeftDiagonal(COORD move) const
 
 	for (; (position.X >= 0 && position.Y < size_of_field_); position.X--, position.Y++)
 	{
-		if (gaming_field_[position.X][position.Y] == player)
-		{
-			counter++;
-		}
-		else
-		{
-			if (counter < size_of_winning_row_) counter = 0;
-			else return true;
-		}
+		if (gaming_field_[position.X][position.Y] == player) counter++;
+		else if (counter < size_of_winning_row_) counter = 0;
+		else return true;
 	}
 
 	return (counter >= size_of_winning_row_ ? true : false);
@@ -327,9 +309,184 @@ std::pair<COORD, COORD> Field::EndsOfWinningRow(int player) const
 	COORD start; // start of winning row
 	COORD end;   // end of winning row
 
+	int counter;
 
-	COORD st; st.X = 0; st.Y = 0;
-	COORD en; en.X = 0; en.Y = 0;
-	return std::make_pair(st, en);
+	// find start and end of winning row
+
+	// column
+	for (int x = 0; x < size_of_field_; ++x)
+	{
+		counter = 0;
+		for (int y = 0; y < size_of_field_; ++y)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				start.X = end.X = x; end.Y = --y;
+				while (y >= 0 && gaming_field_[x][y] == player) --y;
+				start.Y = ++y;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			int y = size_of_field_ - 1;
+			start.X = end.X = x; end.Y = y;
+			while (y >= 0 && gaming_field_[x][y] == player) --y;
+			start.Y = ++y;
+
+			return std::make_pair(start, end);
+		}
+	}
+
+	// line
+	for (int y = 0; y < size_of_field_; ++y)
+	{
+		counter = 0;
+		for (int x = 0; x < size_of_field_; ++x)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				start.Y = end.Y = y; end.X = --x;
+				while (x >= 0 && gaming_field_[x][y] == player) --x;
+				start.X = ++x;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			int x = size_of_field_ - 1;
+			start.Y = end.Y = y; end.X = x;
+			while (x >= 0 && gaming_field_[x][y] == player) --x;
+			start.X = ++x;
+
+			return std::make_pair(start, end);
+		}
+	}
+
+	// left to right diagonal
+	for (int y1 = 0; y1 < size_of_field_; ++y1)
+	{
+		counter = 0;
+		int y = y1;
+		int x;
+		for (x = 0; (x < size_of_field_ && y < size_of_field_); ++x, ++y)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				end.X = --x; end.Y = --y;
+				while (x >= 0 && y >= 0 && gaming_field_[x][y] == player) --x, --y; 
+				start.X = ++x; start.Y = ++y;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			end.X = --x; end.Y = --y;
+			while (x >= 0 && y >= 0 && gaming_field_[x][y] == player) --x, --y;
+			start.X = ++x; start.Y = ++y;
+
+			return std::make_pair(start, end);
+		}
+	}
+	for (int x1 = 0; x1 < size_of_field_; ++x1)
+	{
+		counter = 0;
+		int x = x1;
+		int y;
+		for (y = 0; (x < size_of_field_ && y < size_of_field_); ++x, ++y)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				end.X = --x; end.Y = --y;
+				while (x >= 0 && y >= 0 && gaming_field_[x][y] == player) --x, --y;
+				start.X = ++x; start.Y = ++y;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			end.X = --x; end.Y = --y;
+			while (x >= 0 && y >= 0 && gaming_field_[x][y] == player) --x, --y;
+			start.X = ++x; start.Y = ++y;
+
+			return std::make_pair(start, end);
+		}
+	}
+
+	// right to left diagonal
+	for (int x1 = 0; x1 < size_of_field_; ++x1)
+	{
+		counter = 0;
+		int x = x1;
+		int y;
+		for (y = 0; (x >=0 && y < size_of_field_); --x, ++y)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				end.X = ++x; end.Y = --y;
+				while (x < size_of_field_ && y >= 0 && gaming_field_[x][y] == player) ++x, --y;
+				start.X = --x; start.Y = ++y;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			end.X = ++x; end.Y = --y;
+			while (x < size_of_field_ && y >= 0 && gaming_field_[x][y] == player) ++x, --y;
+			start.X = --x; start.Y = ++y;
+
+			return std::make_pair(start, end);
+		}
+	}
+	for (int y1 = 0; y1 < size_of_field_; ++y1)
+	{
+		counter = 0;
+		int y = y1;
+		int x;
+		for (x = size_of_field_-1; (x >=0 && y < size_of_field_); --x, ++y)
+		{
+			if (gaming_field_[x][y] == player) counter++;
+			else if (counter < size_of_winning_row_) counter = 0;
+			else
+			{
+				end.X = ++x; end.Y = --y;
+				while (x < size_of_field_ && y >= 0 && gaming_field_[x][y] == player) ++x, --y;
+				start.X = --x; start.Y = ++y;
+
+				return std::make_pair(start, end);
+			}
+		}
+		if (counter >= size_of_winning_row_)
+		{
+			end.X = ++x; end.Y = --y;
+			while (x < size_of_field_ && y >= 0 && gaming_field_[x][y] == player) ++x, --y;
+			start.X = --x; start.Y = ++y;
+
+			return std::make_pair(start, end);
+		}
+	}	
+
+	// ERROR: Function can't detect winning row
+	std::string err = "Unknown error";
+	std::string func = "std::pair<COORD, COORD> Field::EndsOfWinningRow(int player) const";
+	std::string info = "Function can't detect winning row";
+	std::string act = "exit(1)";
+	Log::write_log(err, func, info, act);
+	exit(1);
 }
 

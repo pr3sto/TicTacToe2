@@ -48,7 +48,7 @@ private:
 	// player = 1 / 2 - player1 / player2 win
 	void HighlightTheWinningRow(u_int player) const;
 
-	// shows player's figure in the cell of field with color
+	// shows player's figure in the cell of field with color 
 	void ShowFigureOnField(int player, COORD cell, ConsoleColor color) const;
 
 	// shows msg in console

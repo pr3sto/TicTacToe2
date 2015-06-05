@@ -33,12 +33,12 @@ public:
 	int size_of_field() const;
 	int size_of_winning_row() const;
 
-	// dont check index out of bounds
+	// don't check index out of bounds
 	// const - to prohibit changing
 	//
 	// usage: 
 	// FieldInfo field; 
-	// int value_of_field_cell = field[0][0];	
+	// int value_of_field_cell = field[x][y];	
 	const int* operator[](int x) const;
 };
 
@@ -77,8 +77,8 @@ public:
 	// usage: 
 	// Field field; 
 	// int new_value = 42;
-	// int value_of_field_cell = field[0][0];
-	// field[0][0] = new_value;
+	// int value_of_field_cell = field[x][y];
+	// field[x][y] = new_value;
 	int* operator[](int x) const;
 
 	// check posibility to make move in cell 'move'

@@ -13,9 +13,9 @@ class Log
 public:
 	static void write_log(
 		const std::string &error,         // error
-		const std::string &function_name, // in function function_name
+		const std::string &function_name, // in function 'function_name'
 		const std::string &info,          // info about error
-		const std::string &action         // programm action on that error
+		const std::string &action         // programm reaction on that error
 		)
 	{
 		std::ofstream log_file("log_file.txt", std::ios_base::out | std::ios_base::app);
@@ -29,7 +29,7 @@ public:
 		log_file << "Error: " << error << std::endl;
 		log_file << "In function: " << function_name << std::endl;
 		log_file << "Info: " << info << std::endl;
-		log_file << "Programm action: " << action << std::endl;
+		log_file << "Programm reaction: " << action << std::endl;
 		log_file << "---------------------------" << std::endl;
 
 		log_file.close();

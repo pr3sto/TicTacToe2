@@ -221,7 +221,8 @@ void Interface::ShowFigureOnField(int player, COORD cell, ConsoleColor color) co
 	SetConsoleTextAttribute(hStdOut, (WORD)((BLACK << 4) | color));
 	if (player == 1) cout << " X ";
 	else if (player == 2) cout << " O ";
-	SetConsoleTextAttribute(hStdOut, (WORD)((BLACK << 4) | LIGHT_GRAY));
+	// turn back to standart color
+	SetConsoleTextAttribute(hStdOut, (WORD)((BLACK << 4) | LIGHT_GRAY)); 
 }
 
 void Interface::ShowPlayerMove(int player, COORD move) const
@@ -283,6 +284,7 @@ void Interface::HighlightTheWinningRow(u_int player) const
 	COORD end = game_components->field()->EndsOfWinningRow(player).second;
 	COORD tmp;
 
+	// column
 	if (start.X == end.X)
 	{
 		for (int i = start.Y; i <= end.Y; ++i)
@@ -291,6 +293,7 @@ void Interface::HighlightTheWinningRow(u_int player) const
 			this->ShowFigureOnField(player, tmp, LIGHT_GREEN);
 		}
 	}
+	// line
 	else if (start.Y == end.Y)
 	{
 		for (int i = start.X; i <= end.X; ++i)
@@ -299,7 +302,8 @@ void Interface::HighlightTheWinningRow(u_int player) const
 			this->ShowFigureOnField(player, tmp, LIGHT_GREEN);
 		}
 	}
-	else if (start.Y < end.Y)
+	// left to right diagonal
+	else if (start.X < end.X)
 	{
 		int i = start.X;
 		int j = start.Y;
@@ -309,11 +313,12 @@ void Interface::HighlightTheWinningRow(u_int player) const
 			this->ShowFigureOnField(player, tmp, LIGHT_GREEN);
 		}
 	}
-	else if (start.Y > end.Y)
+	// right to left diagonal
+	else if (start.X > end.X)
 	{
 		int i = start.X;
 		int j = start.Y;
-		for (; i <= end.X; ++i, --j)
+		for (; i >= end.X; --i, ++j)
 		{
 			tmp.X = i; tmp.Y = j;
 			this->ShowFigureOnField(player, tmp, LIGHT_GREEN);
@@ -609,41 +614,11 @@ void Interface::SettingsMenuSession() const
 	}
 }
 
-int Interface::MenuSession() const
-{	
-	while (true)
-	{
-		system("cls");
-		this->MainMenu();
-
-		int menu_choise = GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 5);
-
-		switch (menu_choise)
-		{
-		case 1: // play
-			return 1;
-		case 2: // settings
-			this->SettingsMenuSession();
-			break;
-		case 3: // statistic
-			//TODO: write stats func
-			break;
-		case 4: // info
-			this->Info();
-			break;
-		case 5: // exit
-			return 0;
-		default:
-			break;
-		}
-	}
-}
-
 void Interface::BotsInfo() const
 {
 	game_components->vector_of_humans()[0]->Info();
 	cout << endl;
-	
+
 	int width;
 	int counter = 2;
 
@@ -678,7 +653,7 @@ void Interface::Info() const
 		<< setw(42) << "2015" << endl << endl
 		<< endl << endl << endl
 		<< setw(43) << "Боты:" << endl << endl;
-       	 
+
 	this->BotsInfo();
 
 	// for working with cursor
@@ -693,6 +668,35 @@ void Interface::Info() const
 	_flushall();
 }
 
+int Interface::MenuSession() const
+{	
+	while (true)
+	{
+		system("cls");
+		this->MainMenu();
+
+		int menu_choise = GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 5);
+
+		switch (menu_choise)
+		{
+		case 1: // play
+			return 1;
+		case 2: // settings
+			this->SettingsMenuSession();
+			break;
+		case 3: // statistic
+			//TODO: write stats func
+			break;
+		case 4: // info
+			this->Info();
+			break;
+		case 5: // exit
+			return 0;
+		default:
+			break;
+		}
+	}
+}
 
 int Interface::GetNumber(const std::string& msg, int min, int max) const
 {

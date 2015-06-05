@@ -71,7 +71,7 @@ void Game::Play() const
 	{
 		if (this->Player1Move())
 		{
-			game_interface.GameOver(1);
+			game_interface.GameOver(1); // player 1 win
 			return;
 		}
 		counter_of_moves++;
@@ -82,13 +82,13 @@ void Game::Play() const
 
 		if (this->Player2Move())
 		{
-			game_interface.GameOver(2);
+			game_interface.GameOver(2); // player 2 win
 			return;
 		}
 		counter_of_moves++;
 	}
 
-	game_interface.GameOver(0);
+	game_interface.GameOver(0); // draw
 }
 
 void Game::Run() const
