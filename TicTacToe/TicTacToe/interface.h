@@ -41,6 +41,7 @@ private:
 	void ChoisePlayer1Menu() const;    // show menu for choosing player 1
 	void ChoisePlayer2Menu() const;    // show menu for choosing player 2
 
+	void InfoMenu() const;     // includes BotsInfo and Info
 	void BotsInfo() const;     // info from player->Info();
 	void Info() const;         // about game
 

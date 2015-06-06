@@ -384,20 +384,20 @@ void Interface::MainMenu() const
 {
 	this->Logo();
 	
-	cout << endl;
-	cout << setw(46) << "1.   Играть  " << endl << endl;
-	cout << setw(46) << "2. Настройки " << endl << endl;
-	cout << setw(46) << "3. Статистика" << endl << endl;
-	cout << setw(46) << "4.  Об игре  " << endl << endl;
-	cout << setw(46) << "5.   Выход   " << endl << endl;
-	cout << endl;
+	cout << setw(49) << "  -  Меню:  -  " << endl << endl 
+		<< setw(49) << "1. Играть -----" << endl << endl
+		<< setw(49) << "2. Настройки --" << endl << endl
+		<< setw(49) << "3. Статистика -" << endl << endl
+		<< setw(49) << "4. Об игре ----" << endl << endl
+		<< setw(49) << "5. Выход ------" << endl << endl
+		<< endl;
 }
 
 void Interface::SettingsMenu() const 
 {
 	this->Logo();
 
-	cout << setw(63) << "Настройки:                " << endl << endl;
+	cout << setw(50) << "         -  Настройки:  - " << endl << endl;
 	cout << setw(50) << "1. Размер поля            ";
 	cout << setw(5) << "(" << game_components->field()->size_of_field() << "x"
 		<< game_components->field()->size_of_field() << ")" << endl << endl;
@@ -467,7 +467,7 @@ void Interface::ListOfBots() const
 
 	for (auto i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
-		int width = 40 - (*i)->player_name().size() / 2;
+		int width = 41 - (*i)->player_name().size() / 2;
 		cout << setw(width) << counter << ". " << (*i)->player_name() << endl;
 	}
 	cout << endl;
@@ -481,9 +481,9 @@ void Interface::ChoisePlayer1Menu() const
 	cout << endl
 		<< setw(55) << "Первый игрок ходит первым." << endl << endl << endl
 		<< setw(53) << "Выберите тип игрока: " << endl << endl
-		<< setw(48) << " 1. Человек  " << endl << endl
-		<< setw(48) << "2. Компьютер " << endl << endl << endl
-		<< setw(48) << "  3. Назад   " << endl << endl;
+		<< setw(49) << "1. Человек ---" << endl << endl
+		<< setw(49) << "2. Компьютер -" << endl << endl << endl
+		<< setw(49) << "   3. Назад   " << endl << endl;
 	
 	int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
 	switch (player_choise)
@@ -536,9 +536,9 @@ void Interface::ChoisePlayer2Menu() const
 	cout << endl
 		<< setw(55) << "Второй игрок ходит вторым." << endl << endl << endl
 		<< setw(53) << "Выберите тип игрока: " << endl << endl
-		<< setw(48) << " 1. Человек  " << endl << endl
-		<< setw(48) << "2. Компьютер " << endl << endl << endl
-		<< setw(48) << "  3. Назад   " << endl << endl;
+		<< setw(49) << "1. Человек ---" << endl << endl
+		<< setw(49) << "2. Компьютер -" << endl << endl << endl
+		<< setw(49) << "   3. Назад   " << endl << endl;
 
 	int player_choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
 	switch (player_choise)
@@ -616,6 +616,10 @@ void Interface::SettingsMenuSession() const
 
 void Interface::BotsInfo() const
 {
+	system("cls");
+	cout << endl;
+	cout << setw(46) << "-  Боты:  -" << endl << endl << endl;
+
 	game_components->vector_of_humans()[0]->Info();
 	cout << endl;
 
@@ -630,6 +634,17 @@ void Interface::BotsInfo() const
 		(*i)->Info();
 		cout << endl << endl << endl;
 	}
+
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// coordinates of cursor
+	COORD coord;
+	coord.X = 0; coord.Y = 0;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	cin.get();
+	cin.clear();
+	_flushall();
 }
 
 void Interface::Info() const
@@ -650,11 +665,7 @@ void Interface::Info() const
 		<< setw(75) << "Первый ход делает игрок, ставящий крестики.                         " << endl << endl
 		<< endl << endl
 		<< setw(46) << "Автор: pr3sto" << endl << endl
-		<< setw(42) << "2015" << endl << endl
-		<< endl << endl << endl
-		<< setw(43) << "Боты:" << endl << endl;
-
-	this->BotsInfo();
+		<< setw(42) << "2015";
 
 	// for working with cursor
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -666,6 +677,41 @@ void Interface::Info() const
 	cin.get();
 	cin.clear();
 	_flushall();
+}
+
+void Interface::InfoMenu() const
+{
+	while (true)
+	{
+		system("cls");
+		this->Logo();
+
+		cout
+			<< setw(51) << "  -  Об игре:  -  "
+			<< endl << endl << endl << endl
+			<< setw(47) << "1. Общее ---"
+			<< endl << endl
+			<< setw(47) << "2. О ботах -"
+			<< endl << endl << endl
+			<< setw(47) << "  3. Назад  "
+			<< endl << endl << endl << endl;
+
+		int choise = this->GetNumber("\t\t\t    Введите номер пункта меню: ", 1, 3);
+
+		switch (choise)
+		{
+		case 1: // general info
+			this->Info();
+			break;
+		case 2: // bots info
+			this->BotsInfo();
+			break;
+		case 3: // back
+			return;
+		default:
+			break;
+		}
+	}
 }
 
 int Interface::MenuSession() const
@@ -688,7 +734,7 @@ int Interface::MenuSession() const
 			//TODO: write stats func
 			break;
 		case 4: // info
-			this->Info();
+			this->InfoMenu();
 			break;
 		case 5: // exit
 			return 0;
