@@ -4,18 +4,19 @@
 
 Game::Game()
 {
-	game_components = new GameComponents;
-	game_interface = Interface(game_components);
+	game_components = new GameComponents();
+	game_interface = new Interface(game_components);
 }
 
 Game::~Game()
 {
 	delete game_components;
+	delete game_interface;
 }
 
 bool Game::Player1Move() const
 {
-	game_interface.PlayersMoveMenu(1);
+	game_interface->PlayersMoveMenu(1);
 	COORD player1_move = game_components->player1()->Move();
 
 	if (!game_components->field()->CheckMove(1, player1_move))
@@ -31,14 +32,14 @@ bool Game::Player1Move() const
 		exit(1);
 	}
 
-	game_interface.ShowPlayerMove(1, player1_move);
+	game_interface->ShowPlayerMove(1, player1_move);
 
 	return game_components->field()->CheckForWin(player1_move);
 }
 
 bool Game::Player2Move() const
 {
-	game_interface.PlayersMoveMenu(2);
+	game_interface->PlayersMoveMenu(2);
 	COORD player2_move = game_components->player2()->Move();
 
 	if (!game_components->field()->CheckMove(2, player2_move))
@@ -54,14 +55,14 @@ bool Game::Player2Move() const
 		exit(1);
 	}
 
-	game_interface.ShowPlayerMove(2, player2_move);
+	game_interface->ShowPlayerMove(2, player2_move);
 
 	return game_components->field()->CheckForWin(player2_move);
 }
 
 void Game::Play() const
 {
-	game_interface.PlayingMenu();
+	game_interface->PlayingMenu();
 
 	int max_moves = game_components->field()->size_of_field() *
 		game_components->field()->size_of_field();
@@ -71,7 +72,7 @@ void Game::Play() const
 	{
 		if (this->Player1Move())
 		{
-			game_interface.GameOver(1); // player 1 win
+			game_interface->GameOver(1); // player 1 win
 			return;
 		}
 		counter_of_moves++;
@@ -82,20 +83,20 @@ void Game::Play() const
 
 		if (this->Player2Move())
 		{
-			game_interface.GameOver(2); // player 2 win
+			game_interface->GameOver(2); // player 2 win
 			return;
 		}
 		counter_of_moves++;
-	}
+	} 
 
-	game_interface.GameOver(0); // draw
+	game_interface->GameOver(0); // draw
 }
 
 void Game::Run() const
 {
 	// game_interface.MenuSession() - shows menu
 	// and return 0 if player wants to exit
-	while (game_interface.MenuSession())
+	while (game_interface->MenuSession())
 	{
 		game_components->field()->RefreshField();
 		this->Play();

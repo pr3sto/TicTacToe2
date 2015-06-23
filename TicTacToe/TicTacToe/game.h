@@ -12,7 +12,7 @@ class Game
 {
 private:
 	GameComponents* game_components;
-	Interface game_interface;
+	Interface* game_interface;
 
 	// when player set all parametrs
 	// it's run game

@@ -102,9 +102,9 @@ void Interface::PlayingInfo() const
 	// coordinates of cursor
 	COORD coord;
 
-	coord.X = 15; coord.Y = 1;
+	coord.X = 11; coord.Y = 1;
 	SetConsoleCursorPosition(hStdOut, coord);
-	cout << "ÈÃÐÀ";
+	cout << "-  ÈÃÐÀ  -";
 
 	coord.X = 5; coord.Y = 4;
 	SetConsoleCursorPosition(hStdOut, coord);

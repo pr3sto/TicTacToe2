@@ -21,10 +21,10 @@ protected:
 	void DeleteField();
 
 public:
-	const int MAX_SIZE_OF_FIEFD = 10;
-	const int MIN_SIZE_OF_FIEFD = 3;
-	const int MAX_SIZE_OF_WINNING_ROW = 10;
-	const int MIN_SIZE_OF_WINNING_ROW = 3;
+	static const int MAX_SIZE_OF_FIEFD = 10;
+	static const int MIN_SIZE_OF_FIEFD = 3;
+	static const int MAX_SIZE_OF_WINNING_ROW = 10;
+	static const int MIN_SIZE_OF_WINNING_ROW = 3;
 
 	FieldInfo();
 	~FieldInfo();
