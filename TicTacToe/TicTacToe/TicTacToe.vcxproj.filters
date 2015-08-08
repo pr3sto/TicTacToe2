@@ -57,6 +57,9 @@
     <ClCompile Include="example_bot.cpp">
       <Filter>Source Files\Players</Filter>
     </ClCompile>
+    <ClCompile Include="my_bot.cpp">
+      <Filter>Source Files\Players</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="log.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="my_bot.h">
+      <Filter>Header Files\Players</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

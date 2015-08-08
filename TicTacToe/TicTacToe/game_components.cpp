@@ -22,6 +22,7 @@ Players::Players(FieldInfo* field_)
 
 	//TODO: add bots - just push it :/
 	bots_.push_back(new ExampleBot(field_)); // it's an example
+	bots_.push_back(new MyBot(field_));
 }
 
 Players::~Players()

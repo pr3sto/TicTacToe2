@@ -10,6 +10,7 @@
 
 // add your bot here
 #include "example_bot.h" // is's an example
+#include "my_bot.h"
 
 
 // all players (human + bots)

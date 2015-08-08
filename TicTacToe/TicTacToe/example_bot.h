@@ -17,4 +17,5 @@ public:
 	virtual COORD Move() const;
 	virtual void Info() const;
 };
+
 #endif // EXAMPLE_BOT_H_
