@@ -468,9 +468,8 @@ void Interface::ListOfBots() const
 	for (auto i = tmp.begin(); i != tmp.end(); ++i, ++counter)
 	{
 		int width = 41 - (*i)->player_name().size() / 2;
-		cout << setw(width) << counter << ". " << (*i)->player_name() << endl;
+		cout << setw(width) << counter << ". " << (*i)->player_name() << endl << endl;
 	}
-	cout << endl;
 }
 
 void Interface::ChoisePlayer1Menu() const

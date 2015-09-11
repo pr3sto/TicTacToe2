@@ -14,6 +14,7 @@ class Player
 protected:
 	FieldInfo* field;
 	std::string player_name_; // maxlength of player name = 12
+	int index;                // index number of player
 
 public:
 	Player(FieldInfo* _field, std::string _player_name);
@@ -24,6 +25,7 @@ public:
 
 	// setter
 	void set_player_name(std::string new_name);
+	void set_index(int _index);
 
 	// player's move
 	virtual COORD Move() const =0;

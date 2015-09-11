@@ -45,7 +45,7 @@ public:
 
 
 // information about gaming field
-// with the possibility of change something
+// with the possibility to change something
 class Field : public FieldInfo
 {
 private:

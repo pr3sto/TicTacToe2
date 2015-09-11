@@ -17,6 +17,7 @@ Game::~Game()
 bool Game::Player1Move() const
 {
 	game_interface->PlayersMoveMenu(1);
+	game_components->player1()->set_index(1);
 	COORD player1_move = game_components->player1()->Move();
 
 	if (!game_components->field()->CheckMove(1, player1_move))
@@ -40,6 +41,7 @@ bool Game::Player1Move() const
 bool Game::Player2Move() const
 {
 	game_interface->PlayersMoveMenu(2);
+	game_components->player2()->set_index(2);
 	COORD player2_move = game_components->player2()->Move();
 
 	if (!game_components->field()->CheckMove(2, player2_move))

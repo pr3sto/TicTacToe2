@@ -27,6 +27,7 @@ Player::Player(FieldInfo* _field, std::string _player_name)
 
 	field = _field;
 	player_name_ = _player_name;
+	index = 0;
 }
 
 Player::~Player() 
@@ -52,6 +53,11 @@ void Player::set_player_name(std::string new_name)
 	// maxlength of player name = 12
 	int size_of_name = min(new_name.size(), 12);
 	player_name_ = std::string(new_name.begin(), new_name.begin() + size_of_name);
+}
+
+void Player::set_index(int _index)
+{
+	index = _index;
 }
 
 void Player::Info() const
