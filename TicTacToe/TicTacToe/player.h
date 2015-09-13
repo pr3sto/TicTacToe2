@@ -28,7 +28,7 @@ public:
 	void set_index(int _index);
 
 	// player's move
-	virtual COORD Move() const =0;
+	virtual COORD Move() =0;
 
 	// Info about this bot
 	virtual void Info() const;

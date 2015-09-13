@@ -9,7 +9,7 @@ HumanPlayer::HumanPlayer(FieldInfo* _field, std::string _player_name) :
 HumanPlayer::~HumanPlayer() 
 {}
 
-COORD HumanPlayer::Move() const
+COORD HumanPlayer::Move()
 { 
 	// for working with cursor
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);

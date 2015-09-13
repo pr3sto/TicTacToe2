@@ -14,7 +14,7 @@ public:
 	ExampleBot(FieldInfo* _field);
 	~ExampleBot();
 
-	virtual COORD Move() const;
+	virtual COORD Move();
 	virtual void Info() const;
 };
 

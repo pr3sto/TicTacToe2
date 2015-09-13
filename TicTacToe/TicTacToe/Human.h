@@ -12,7 +12,7 @@ public:
 	HumanPlayer(FieldInfo* _field, std::string _player_name);
 	~HumanPlayer();
 
-	virtual COORD Move() const;
+	virtual COORD Move();
 	virtual void Info() const;
 };
 #endif // HUMAN_H_

@@ -9,7 +9,7 @@ ExampleBot::ExampleBot(FieldInfo* _field) :
 ExampleBot::~ExampleBot() 
 {}
 
-COORD ExampleBot::Move() const
+COORD ExampleBot::Move()
 {
 	std::vector<COORD> free_cells;
 	for (int i = 0; i < field->size_of_field(); ++i)
