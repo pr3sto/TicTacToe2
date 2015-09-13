@@ -89,6 +89,10 @@ void Game::Play() const
 			return;
 		}
 		counter_of_moves++;
+
+		// when there are no free cells 
+		if (counter_of_moves == max_moves)
+			break;
 	} 
 
 	game_interface->GameOver(0); // draw
