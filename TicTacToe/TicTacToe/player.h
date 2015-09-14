@@ -14,7 +14,7 @@ class Player
 protected:
 	FieldInfo* field;
 	std::string player_name_; // maxlength of player name = 12
-	int index;                // index number of player
+	int player_index;         // index number of player
 
 public:
 	Player(FieldInfo* _field, std::string _player_name);

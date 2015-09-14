@@ -27,7 +27,7 @@ Player::Player(FieldInfo* _field, std::string _player_name)
 
 	field = _field;
 	player_name_ = _player_name;
-	index = 0;
+	player_index = 0;
 }
 
 Player::~Player() 
@@ -57,7 +57,7 @@ void Player::set_player_name(std::string new_name)
 
 void Player::set_index(int _index)
 {
-	index = _index;
+	player_index = _index;
 }
 
 void Player::Info() const
