@@ -42,11 +42,11 @@ void MyBot::init_work_field()
 bool MyBot::is_terminal(COORD position, int depth)
 {
 	// max depth
-	if (work_field->size_of_field() == 4 && depth == 6)
+	if (work_field->size_of_field() == 4 && depth == 7)
 		return true;
-	if (work_field->size_of_field() == 5 && depth == 5)
+	if (work_field->size_of_field() == 5 && depth == 6)
 		return true;
-	if (work_field->size_of_field() == 6 && depth == 4)
+	if (work_field->size_of_field() == 6 && depth == 5)
 		return true;
 	if ((work_field->size_of_field() == 7 || work_field->size_of_field() == 8) && depth == 3)
 		return true;
@@ -332,6 +332,19 @@ int MyBot::minimax_algorithm(COORD position, int alpha, int beta, int player, in
 	auto cmp = [](std::pair<COORD, int> const & a, std::pair<COORD, int> const & b)
 	{ return a.second > b.second; };
 	std::sort(possible_positions.begin(), possible_positions.end(), cmp);
+	
+	// remove "useless" positions
+	if (work_field->size_of_field() != 3)
+	{
+		int worth_score = possible_positions[possible_positions.size() - 1].second;
+		int best_score = possible_positions[0].second;
+		auto remover = [worth_score, best_score](std::pair<COORD, int> const & a)
+		{ return a.second == worth_score && a.second != best_score; };
+		possible_positions.erase(
+			std::remove_if(possible_positions.begin(), possible_positions.end(), remover),
+			possible_positions.end()
+			);
+	}
 
 	// minimax algorithm
 	for (auto i = possible_positions.begin(); i != possible_positions.end(); ++i)
