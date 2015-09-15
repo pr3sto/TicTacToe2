@@ -85,6 +85,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="my_bot.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="example_bot.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="log.h" />
     <ClInclude Include="my_bot.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="statistics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

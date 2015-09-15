@@ -118,3 +118,37 @@ void GameComponents::set_player2(Player* _player2)
 		player2_ = _player2;
 	}
 }
+
+void GameComponents::ShowStatistics() const
+{
+	stats.Show();
+}
+
+void GameComponents::SaveStatistics() const
+{
+	stats.Save();
+}
+
+void GameComponents::AddStatistics(
+	std::string player1_name,
+	std::string player2_name,
+	Statistics::results player1_result)
+{
+	switch (player1_result)
+	{
+	case Statistics::WIN:
+		stats.AddStatistics(player1_name, Statistics::WIN);
+		stats.AddStatistics(player2_name, Statistics::LOSS);
+		break;
+	case Statistics::LOSS:
+		stats.AddStatistics(player1_name, Statistics::LOSS);
+		stats.AddStatistics(player2_name, Statistics::WIN);
+		break;
+	case Statistics::DRAW:
+		stats.AddStatistics(player1_name, Statistics::DRAW);
+		stats.AddStatistics(player2_name, Statistics::DRAW);
+		break;
+	default:
+		break;
+	}
+}

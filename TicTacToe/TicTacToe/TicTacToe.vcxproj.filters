@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{641874d5-f85f-4df0-926e-b0a888f1421b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Statistics">
+      <UniqueIdentifier>{b9adb02d-c7b3-4d5a-98cd-3e120adfa65e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Statistics">
+      <UniqueIdentifier>{1ff2f443-3300-4434-bd27-0271a3cf0481}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,6 +66,9 @@
     <ClCompile Include="my_bot.cpp">
       <Filter>Source Files\Players</Filter>
     </ClCompile>
+    <ClCompile Include="statistics.cpp">
+      <Filter>Source Files\Statistics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -88,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="my_bot.h">
       <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="statistics.h">
+      <Filter>Header Files\Statistics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

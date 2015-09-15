@@ -41,9 +41,10 @@ private:
 	void ChoisePlayer1Menu() const;    // show menu for choosing player 1
 	void ChoisePlayer2Menu() const;    // show menu for choosing player 2
 
-	void InfoMenu() const;     // includes BotsInfo and Info
-	void BotsInfo() const;     // info from player->Info();
-	void Info() const;         // about game
+	void InfoMenu() const;       // includes BotsInfo and Info
+	void BotsInfo() const;       // info from player->Info();
+	void Info() const;           // about game
+	void StatisticsMenu() const; // players's statistics 
 
 	// highlight the winning row with green color
 	// player = 1 / 2 - player1 / player2 win

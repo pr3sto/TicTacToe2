@@ -4,9 +4,10 @@
 #define GAME_PARAMETRS_H_
 
 #include <vector>
-#include "field.h"  // gaming field
-#include "player.h" // Player bot
-#include "human.h"  // Human bot
+#include "field.h"      // gaming field
+#include "player.h"     // Player bot
+#include "human.h"      // Human bot
+#include "statistics.h" // statistics about players
 
 // add your bot here
 #include "example_bot.h" // is's an example
@@ -41,6 +42,8 @@ private:
 	Player* player1_;  // pointer to player 1
 	Player* player2_;  // pointer to player 2
 
+	Statistics stats;  // statistics about players
+
 public:
 	GameComponents();
 	~GameComponents();
@@ -55,6 +58,13 @@ public:
 	// setters
 	void set_player1(Player* _player1);
 	void set_player2(Player* _player2);
+	
+	// stats
+	void ShowStatistics() const;
+	void SaveStatistics() const;
+	void AddStatistics(std::string player1_name,            
+					   std::string player2_name, 
+					   Statistics::results player1_result);
 };
 
 #endif // GAME_PARAMETRS_H_

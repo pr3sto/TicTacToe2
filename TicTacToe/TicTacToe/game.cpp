@@ -74,6 +74,8 @@ void Game::Play() const
 	{
 		if (this->Player1Move())
 		{
+			game_components->AddStatistics(game_components->player1()->player_name(),
+				game_components->player2()->player_name(), Statistics::WIN);
 			game_interface->GameOver(1); // player 1 win
 			return;
 		}
@@ -85,6 +87,8 @@ void Game::Play() const
 
 		if (this->Player2Move())
 		{
+			game_components->AddStatistics(game_components->player2()->player_name(),
+				game_components->player1()->player_name(), Statistics::WIN);
 			game_interface->GameOver(2); // player 2 win
 			return;
 		}
@@ -95,6 +99,8 @@ void Game::Play() const
 			break;
 	} 
 
+	game_components->AddStatistics(game_components->player1()->player_name(),
+		game_components->player2()->player_name(), Statistics::DRAW);
 	game_interface->GameOver(0); // draw
 }
 
@@ -104,6 +110,7 @@ void Game::Run() const
 	// and return 0 if player wants to exit
 	while (game_interface->MenuSession())
 	{
+		game_components->SaveStatistics();
 		game_components->field()->RefreshField();
 		this->Play();
 	}

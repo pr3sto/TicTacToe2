@@ -616,7 +616,7 @@ void Interface::SettingsMenuSession() const
 void Interface::BotsInfo() const
 {
 	system("cls");
-	cout << endl;
+	this->Logo();
 	cout << setw(46) << "-  Боты:  -" << endl << endl << endl;
 
 	game_components->vector_of_humans()[0]->Info();
@@ -713,6 +713,28 @@ void Interface::InfoMenu() const
 	}
 }
 
+void Interface::StatisticsMenu() const
+{
+	system("cls");
+	this->Logo();
+	cout << setw(51) << " -  Статистика:  -";
+	cout << endl;
+	cout << endl;
+
+	this->game_components->ShowStatistics();
+
+	// for working with cursor
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// coordinates of cursor
+	COORD coord;
+	coord.X = 0; coord.Y = 0;
+	SetConsoleCursorPosition(hStdOut, coord);
+
+	cin.get();
+	cin.clear();
+	_flushall();
+}
+
 int Interface::MenuSession() const
 {	
 	while (true)
@@ -730,7 +752,7 @@ int Interface::MenuSession() const
 			this->SettingsMenuSession();
 			break;
 		case 3: // statistic
-			//TODO: write stats func
+			this->StatisticsMenu();
 			break;
 		case 4: // info
 			this->InfoMenu();
